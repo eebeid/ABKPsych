@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+:root {
+  /* Prominent Slate Velvet Blue Palette Tokens */
+  --color-slate-blue-deep: #253344;   /* Deep Slate Navy for banners & footers */
+  --color-slate-blue: #3B4C61;        /* Primary Slate Navy (Buttons & Accents) */
+  --color-slate-blue-light: #EBF0F5;  /* Soft Blue Wash for background highlights */
+  --color-slate-blue-border: #7A8DA6; /* Muted Navy Blue border */
+  
+  --color-warm-ivory: #EAE8E5;        /* Light Pearl Grey background */
+  --color-soft-paper: #FAFAFA;        /* Soft Paper card surface */
+  --color-charcoal: #181A1D;          /* Rich Velvet Charcoal Text */
+  --color-charcoal-light: #4A5056;    /* Muted Charcoal text */
+  
+  --color-warm-clay: #7A6B5D;         /* Deep Walnut Taupe (Secondary Accent) */
+  --color-warm-border: #D5CECB;       /* Warm Greige Border */
+  --color-soft-border: #E8E3DF;       /* Soft Light Border */
+
+  /* Default CSS Theme bindings */
+  --background: var(--color-warm-ivory);
+  --foreground: var(--color-charcoal);
+
+  /* Fonts */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+@theme inline {
+  --color-slate-blue-deep: #253344;
+  --color-slate-blue: #3B4C61;
+  --color-slate-blue-light: #EBF0F5;
+  --color-slate-blue-border: #7A8DA6;
+
+  --color-warm-ivory: #EAE8E5;
+  --color-soft-paper: #FAFAFA;
+  --color-charcoal: #181A1D;
+  --color-charcoal-light: #4A5056;
+
+  --color-warm-clay: #7A6B5D;
+  --color-warm-border: #D5CECB;
+  --color-soft-border: #E8E3DF;
+
+  --font-serif: var(--font-serif-family, Georgia, serif);
+  --font-sans: var(--font-sans-family, system-ui, sans-serif);
+}
+
+/* Base reset & accessibility */
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-warm-ivory);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography styles */
+h1, h2, h3, h4, .font-serif-editorial {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* Focus indicator for high accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-slate-blue);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-slate-blue-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-slate-blue-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-slate-blue);
+}
+
+/* Reduced Motion Safety */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Editorial subtle animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Card hover soft shadows */
+.editorial-card {
+  background-color: var(--color-soft-paper);
+  border: 1px solid var(--color-warm-border);
+  transition: all 0.3s ease;
+}
+
+.editorial-card:hover {
+  border-color: var(--color-slate-blue);
+  box-shadow: 0 10px 30px -10px rgba(37, 51, 68, 0.15);
+}

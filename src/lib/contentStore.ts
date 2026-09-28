@@ -6,11 +6,18 @@ const DATA_DIR = path.join(process.cwd(), "data");
 const CONTENT_FILE = path.join(DATA_DIR, "content.json");
 
 export type EditableContent = {
-  // Practice info
+  // ── Practice meta ──
   practiceName: string;
   psychologistName: string;
   doctorTitle: string;
   credentials: string;
+  degree: string;
+  university: string;
+  internship: string;
+  bachelors: string;
+  licensure: string;
+  yearsLicensed: string;
+  yearsAssessment: string;
   email: string;
   phone: string;
   officeAddress: string;
@@ -21,17 +28,32 @@ export type EditableContent = {
   consultationDetails: string;
   emergencyDisclaimer: string;
   boundaryDisclaimer: string;
-  // Meta
+  // ── Home page ──
+  heroHeadline: string;
+  heroTagline: string;
+  heroIntro: string;
+  clinicalDistinctionHeadline: string;
+  clinicalDistinctionPara1: string;
+  clinicalDistinctionPara2: string;
+  ctaHeadline: string;
+  ctaBody: string;
+  // ── About page ──
+  aboutOpening: string;
+  aboutPara1: string;
+  aboutQuote: string;
+  aboutPara2: string;
+  aboutPara3: string;
+  // ── SEO ──
   metaTitle: string;
   metaDescription: string;
-  // FAQ items
+  // ── FAQ ──
   faq: {
     id: string;
     category: string;
     question: string;
     answer: string;
   }[];
-  // Audience descriptions
+  // ── Audiences ──
   audiences: {
     id: string;
     title: string;

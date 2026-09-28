@@ -4,12 +4,12 @@ export interface PracticeConfig {
   credentials: string;
   degree: string;
   university: string;
+  internship: string;
+  bachelors: string;
+  licensure: string;
   yearsLicensed: string;
   yearsAssessment: string;
-  orientation: string;
   practiceType: string;
-  licenseNumber: string;
-  licensedJurisdictions: string[];
   practiceName: string;
   email: string;
   phone: string;
@@ -24,7 +24,7 @@ export interface PracticeConfig {
   privacyPolicyURL: string;
   noticeOfPrivacyPracticesURL: string;
   emergencyDisclaimer: string;
-  professionalAffiliations: string[];
+  boundaryDisclaimer: string;
   meta: {
     title: string;
     description: string;
@@ -34,37 +34,34 @@ export interface PracticeConfig {
 
 export const practiceConfig: PracticeConfig = {
   psychologistName: "Dr. Antonia B. Krimitsos",
-  doctorTitle: "Dr. Antonia B. Krimitsos, PsyD",
-  credentials: "PsyD · Licensed Psychologist",
-  degree: "Doctor of Psychology (PsyD)",
-  university: "George Washington University",
-  yearsLicensed: "21+",
-  yearsAssessment: "15+",
-  orientation: "Psychodynamic Psychotherapy",
-  practiceType: "Intimate Telehealth Practice",
-  licenseNumber: "[TO BE PROVIDED]",
-  licensedJurisdictions: ["[STATE 1 - TO BE PROVIDED]", "[STATE 2 - TO BE PROVIDED]"],
-  practiceName: "abk psychological services, pllc",
+  doctorTitle: "Dr. Antonia B. Krimitsos, Psy.D.",
+  credentials: "Licensed Psychologist",
+  degree: "Psy.D., Clinical Psychology",
+  university: "The George Washington University · Washington, DC",
+  internship: "Lenox Hill Hospital · New York, NY",
+  bachelors: "B.A., Biology-Psychology · Skidmore College, NY",
+  licensure: "Licensed Psychologist, New York State",
+  yearsLicensed: "20+",
+  yearsAssessment: "20+",
+  practiceType: "Intentionally Small, Direct-Service Practice",
+  practiceName: "ABK Psychological Services, PLLC",
   email: "dr.antonia@abkpsych.com",
   phone: "(555) 000-0000",
-  consultationDetails: "Direct 15-minute preliminary consultation with Dr. Krimitsos",
+  consultationDetails: "Direct preliminary consultation with Dr. Krimitsos",
   sessionLength: "45–50 minutes",
-  fees: "[TO BE PROVIDED]",
-  insurancePolicy: "Out-of-network private practice. Direct billing to insurance is not provided.",
+  fees: "Private, direct-service practice. Details provided upon consultation.",
+  insurancePolicy: "Services are provided privately and directly. Out-of-network superbills provided upon request.",
   superbillPolicy: "Monthly superbills provided for out-of-network insurance reimbursement.",
   schedulingURL: "#contact",
   professionalPhoto: "/images/doctor-portrait.png",
-  officeAddress: "100% Telehealth Practice",
+  officeAddress: "Telehealth Psychotherapy Practice",
   privacyPolicyURL: "/privacy",
   noticeOfPrivacyPracticesURL: "/privacy#notice",
-  emergencyDisclaimer: "This site is for non-urgent administrative inquiries and does not establish a clinical relationship. In a crisis or emergency, call 988, call 911, or visit the nearest emergency room immediately.",
-  professionalAffiliations: [
-    "American Psychological Association (APA)",
-    "[State Psychological Association - TO BE PROVIDED]",
-  ],
+  emergencyDisclaimer: "This site is for non-urgent administrative inquiries and does not establish a clinical relationship. In a mental health emergency, please call 988, call 911, or visit your nearest emergency room immediately.",
+  boundaryDisclaimer: "To maintain clear professional boundaries and avoid conflicts of interest, I do not provide private services to individuals or family members with whom I have an existing professional relationship through another organization.",
   meta: {
-    title: "abk psychological services, pllc | Dr. Antonia B. Krimitsos, PsyD",
-    description: "Intimate, one-on-one telehealth psychotherapy for adults, parents, partners, and families navigating autism diagnosis, identity, and relationships. Led directly by Dr. Antonia B. Krimitsos.",
+    title: "ABK Psychological Services, PLLC | Dr. Antonia B. Krimitsos",
+    description: "Collaborative, reflective, and relational psychotherapy for adolescents, adults, parents, and partners navigating autism, ADHD, and neurodivergence.",
     siteUrl: "https://www.abkpsych.com",
   },
 };
@@ -76,69 +73,53 @@ export interface AudienceInfo {
   anchor: string;
   summary: string;
   description: string;
+  boundaryNote?: string;
   keyThemes: string[];
-  quote: string;
 }
 
 export const audienceData: AudienceInfo[] = [
   {
-    id: "adults",
-    title: "Autistic Adults",
-    subtitle: "Identity, masking & self-understanding",
-    anchor: "#adults",
-    summary: "For adults newly diagnosed, self-identified, or re-examining life through an autistic lens.",
-    description: "An adult diagnosis brings clarity alongside complex questions about past masking, burnout, relationships, and authentic self-acceptance.",
+    id: "individuals",
+    title: "Individuals",
+    subtitle: "Adolescents & Adults",
+    anchor: "#individuals",
+    summary: "For those diagnosed as adolescents or adults, or re-examining life through a neurodevelopmental lens.",
+    description: "Those diagnosed as adolescents or adults have already spent years learning to compensate, adapt, or mask their difficulties, often becoming highly capable on the outside while expending considerable effort to manage what others cannot see. My practice offers meaningful exploration of questions about identity, relationships, work, and the life you have built around strategies that may no longer serve you. Integrating this new understanding can allow you to move forward with greater clarity about who you are.",
     keyThemes: [
-      "Re-examining past memories through a neurodiversity lens",
-      "Navigating masking, energetic burnout, and boundaries",
-      "Fostering authentic self-advocacy and self-compassion",
-      "Processing relief, grief, and identity changes",
+      "Understanding masking, compensation, and energetic burnout",
+      "Integrating later-in-life identification into identity and career",
+      "Re-examining relational patterns and long-standing compromises",
+      "Moving forward with authentic self-clarity and direction",
     ],
-    quote: "A quiet space to integrate your diagnosis into an authentic, compassionate identity.",
   },
   {
     id: "parents",
-    title: "Parents of Autistic Children",
-    subtitle: "Space for the parent's own emotional life",
+    title: "Parents",
+    subtitle: "Dedicated space for parents",
     anchor: "#parents",
-    summary: "Dedicated therapy for parents to process their own feelings, expectations, and family dynamics.",
-    description: "Parents deserve their own reflective space—separate from child treatments—to process changing expectations, emotional fatigue, and relationship dynamics.",
+    summary: "Space for parents to process the emotional impact, shifting expectations, and personal grief following a diagnosis.",
+    description: "When your child is diagnosed in early or late adolescence, following years of uncertainty, unanswered questions, or challenges that were difficult to understand, parents may also need space to process what has come before. Addressing parental stress and emotional fatigue, while processing the unique grief of shifting expectations, is worthy of the dedicated space of therapy.",
     keyThemes: [
-      "Processing the emotional impact of a child's diagnostic evaluation",
-      "Re-evaluating parenting dreams, expectations, and family roles",
-      "Balancing child advocacy with your own emotional well-being",
-      "Navigating extended family relationships and social pressures",
+      "Processing years of uncertainty and unanswered questions",
+      "Addressing parental stress, exhaustion, and emotional fatigue",
+      "Navigating the unique grief of shifting family expectations",
+      "Creating dedicated space for your own reflective experience",
     ],
-    quote: "You deserve a therapeutic space focused on your experience as a person and parent.",
   },
   {
     id: "partners",
-    title: "Spouses & Partners",
-    subtitle: "Communication & relationship dynamics",
+    title: "Partners",
+    subtitle: "Individual therapy for partners",
     anchor: "#partners",
-    summary: "Navigating relationship patterns, intimacy, and mutual understanding in neurodiverse partnerships.",
-    description: "Therapy helps partners understand sensory needs, emotional processing differences, and communication patterns without blame.",
+    summary: "Individual therapy for partners navigating how neurodivergence influences relationship dynamics and intimacy.",
+    description: "When neurodivergence enters an adult relationship, whether through a recent diagnosis or a growing recognition of longstanding differences, established perspectives on communication, intimacy, and conflict may shift. Processing how this realization influences the relationship allows for greater understanding of your own needs and experiences within it.",
+    boundaryNote: "ABK Psychological Services provides individual psychotherapy for partners, rather than couples or marriage counseling.",
     keyThemes: [
-      "Understanding communication breakdowns without assigning blame",
-      "Navigating sensory, emotional, and social processing differences",
-      "Re-evaluating relationship expectations with mutual clarity",
-      "Fostering intimacy and sustainable emotional connection",
+      "Understanding shifts in communication, intimacy, and conflict",
+      "Exploring your own needs and boundaries within the relationship",
+      "Processing how a partner's diagnosis influences shared dynamics",
+      "Reflecting on long-standing relationship patterns without blame",
     ],
-    quote: "Moving past frustration into curious, respectful relational connection.",
-  },
-  {
-    id: "siblings",
-    title: "Siblings & Family",
-    subtitle: "Family roles & adult boundaries",
-    anchor: "#siblings",
-    summary: "Exploring family dynamics, unspoken roles, and personal identity in families affected by autism.",
-    description: "Adult siblings often carry unspoken emotional roles. Therapy offers a place to explore your own story within the family system.",
-    keyThemes: [
-      "Unpacking early family expectations and 'glass child' experiences",
-      "Navigating adult responsibilities, guilt, and healthy boundaries",
-      "Creating space for your own identity separate from family roles",
-    ],
-    quote: "Your place in the family story matters. Therapy honors your experience.",
   },
 ];
 
@@ -146,50 +127,44 @@ export interface FAQItem {
   id: string;
   question: string;
   answer: string;
-  category: "General" | "Services & Fit" | "Fees & Insurance" | "Telehealth";
+  category: "General" | "Services & Fit" | "Fees & Practice";
 }
 
 export const faqData: FAQItem[] = [
   {
+    id: "practice-model",
+    category: "Services & Fit",
+    question: "What is the practice model of ABK Psychological Services?",
+    answer: "ABK Psychological Services, PLLC was founded as an intentionally small, direct-service psychotherapy practice. You work directly and exclusively with Dr. Antonia B. Krimitsos, ensuring privacy, consistency, and highly personalized care.",
+  },
+  {
     id: "who-do-you-work-with",
     category: "Services & Fit",
     question: "Who does Dr. Krimitsos work with?",
-    answer: "Dr. Krimitsos works directly with adults navigating autism diagnosis, parents of autistic children, spouses and partners in neurodiverse relationships, and adult family members.",
+    answer: "Dr. Krimitsos works with adolescents and adults navigating autism, ADHD, and broader neurodivergence, as well as parents and partners affected by a loved one's diagnosis or growing recognition of neurodevelopmental differences.",
   },
   {
-    id: "small-practice-intimacy",
-    category: "General",
-    question: "What makes ABK Psychological Services an intimate practice?",
-    answer: "ABK Psychological Services, PLLC is a small, direct private practice. You work exclusively and directly with Dr. Antonia B. Krimitsos—without associates, administrative middle layers, or group handoffs.",
-  },
-  {
-    id: "do-you-provide-assessments",
+    id: "couples-counseling",
     category: "Services & Fit",
-    question: "Do you offer diagnostic autism assessments?",
-    answer: "This practice focuses exclusively on psychotherapy. Dr. Krimitsos brings over 15 years of early-childhood autism assessment experience into therapy, but does not offer formal diagnostic testing here.",
+    question: "Do you offer couples or marriage counseling?",
+    answer: "ABK Psychological Services provides individual psychotherapy for partners, rather than couples or marriage counseling. If couples counseling is needed, Dr. Krimitsos can provide referrals.",
   },
   {
-    id: "what-is-psychodynamic",
-    category: "General",
-    question: "What is psychodynamic psychotherapy?",
-    answer: "A reflective approach that explores how past experiences, attachments, and emotional patterns shape your current life and relationships—focusing on self-understanding rather than rigid symptom checklists.",
-  },
-  {
-    id: "telehealth-details",
-    category: "Telehealth",
-    question: "How is telehealth therapy conducted?",
-    answer: "All sessions are held via a secure, confidential video platform, allowing you to engage in therapy from the comfort and sensory safety of your home.",
+    id: "assessments",
+    category: "Services & Fit",
+    question: "Do you offer diagnostic autism or ADHD testing?",
+    answer: "This practice focuses on psychotherapy. While Dr. K brings over two decades of diagnostic assessment experience into therapy, she does not conduct formal diagnostic evaluations through this practice.",
   },
   {
     id: "fees-and-payment",
-    category: "Fees & Insurance",
-    question: "What are your fees and insurance policies?",
-    answer: "This is an out-of-network private practice. Fees are discussed transparently during consultation. Monthly superbills are provided for insurance reimbursement upon request.",
+    category: "Fees & Practice",
+    question: "How are fees and billing handled?",
+    answer: "Services are provided privately and directly. Out-of-network superbills can be provided monthly for clients seeking reimbursement from their insurance provider.",
   },
   {
-    id: "how-to-get-started",
+    id: "how-to-start",
     category: "General",
-    question: "How do I get started?",
-    answer: "Submit a brief inquiry on our contact page. Dr. Krimitsos will follow up directly to schedule a 15-minute preliminary consultation.",
+    question: "How do I schedule an initial consultation?",
+    answer: "You can submit an inquiry via the Contact page or email dr.antonia@abkpsych.com. Dr. K will follow up directly to discuss your needs and schedule an initial consultation.",
   },
 ];

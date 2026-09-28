@@ -1,383 +1,179 @@
-const fs = require("fs");
-const path = require("path");
-const {
-  Document,
-  Packer,
-  Paragraph,
-  TextRun,
-  HeadingLevel,
-  AlignmentType,
-  BorderStyle,
-  Table,
-  TableRow,
-  TableCell,
-  WidthType,
-} = require("docx");
+const fs = require('fs');
+const path = require('path');
+const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = require('docx');
 
-async function generateDocx() {
+async function buildDocx() {
   const doc = new Document({
-    styles: {
-      default: {
-        heading1: {
-          run: {
-            font: "Georgia",
-            size: 36,
-            bold: true,
-            color: "2C302E",
-          },
-          paragraph: {
-            spacing: { before: 400, after: 200 },
-          },
-        },
-        heading2: {
-          run: {
-            font: "Georgia",
-            size: 28,
-            bold: true,
-            color: "52634E",
-          },
-          paragraph: {
-            spacing: { before: 300, after: 150 },
-          },
-        },
-        heading3: {
-          run: {
-            font: "Arial",
-            size: 22,
-            bold: true,
-            color: "8E5A47",
-          },
-          paragraph: {
-            spacing: { before: 200, after: 100 },
-          },
-        },
-        body: {
-          run: {
-            font: "Arial",
-            size: 22,
-            color: "2C302E",
-          },
-          paragraph: {
-            spacing: { line: 300, after: 150 },
-          },
-        },
-      },
-    },
     sections: [
       {
         properties: {},
         children: [
-          // Title Page / Header
           new Paragraph({
+            text: "ABK Psychological Services, PLLC",
+            heading: HeadingLevel.TITLE,
             alignment: AlignmentType.CENTER,
-            spacing: { before: 600, after: 100 },
-            children: [
-              new TextRun({
-                text: "ABK Psychological Services, PLLC",
-                font: "Georgia",
-                size: 44,
-                bold: true,
-                color: "2C302E",
-              }),
-            ],
+            spacing: { after: 100 },
           }),
           new Paragraph({
-            alignment: AlignmentType.CENTER,
-            spacing: { after: 400 },
-            children: [
-              new TextRun({
-                text: "Dr. Antonia B. Krimitsos, PsyD · Licensed Psychologist",
-                font: "Arial",
-                size: 24,
-                bold: true,
-                color: "52634E",
-              }),
-            ],
-          }),
-          new Paragraph({
-            alignment: AlignmentType.CENTER,
-            spacing: { after: 600 },
-            children: [
-              new TextRun({
-                text: "Website Content & Practice Copy Review Document",
-                font: "Georgia",
-                size: 24,
-                italic: true,
-                color: "4A4E4C",
-              }),
-            ],
-          }),
-
-          // Divider Line
-          new Paragraph({
-            border: {
-              bottom: { color: "DCD6CC", space: 1, value: "single", size: 12 },
-            },
-            spacing: { after: 400 },
-          }),
-
-          // Overview Table
-          new Paragraph({
-            text: "Practice Overview & Credentials",
+            text: "Website Content & Development Documentation",
             heading: HeadingLevel.HEADING_2,
+            alignment: AlignmentType.CENTER,
+            spacing: { after: 300 },
+          }),
+
+          // SECTION 1
+          new Paragraph({
+            text: "1. Practice Overview & Direction",
+            heading: HeadingLevel.HEADING_1,
+            spacing: { before: 200, after: 100 },
           }),
           new Paragraph({
             children: [
-              new TextRun({ text: "• Practice Name: ", bold: true }),
+              new TextRun({ text: "Practice Name: ", bold: true }),
               new TextRun("ABK Psychological Services, PLLC\n"),
-              new TextRun({ text: "• Clinician: ", bold: true }),
-              new TextRun("Dr. Antonia B. Krimitsos, PsyD\n"),
-              new TextRun({ text: "• Education: ", bold: true }),
-              new TextRun("Doctor of Psychology (PsyD), George Washington University\n"),
-              new TextRun({ text: "• Clinical Experience: ", bold: true }),
-              new TextRun("21+ Years Licensed Psychologist · 15+ Years Early Childhood Autism Assessment\n"),
-              new TextRun({ text: "• Practice Format: ", bold: true }),
-              new TextRun("Small, Intimate 100% Video Telehealth Practice (Direct one-on-one care with Dr. Krimitsos)\n"),
-              new TextRun({ text: "• Therapeutic Orientation: ", bold: true }),
-              new TextRun("Psychodynamic & Neurodiversity-Affirmative Psychotherapy"),
+              new TextRun({ text: "Psychologist: ", bold: true }),
+              new TextRun("Dr. Antonia B. Krimitsos, Psy.D. (Licensed Psychologist, NY State)\n"),
+              new TextRun({ text: "Practice Model: ", bold: true }),
+              new TextRun("Intentionally small, private, direct-service psychotherapy practice.\n"),
+              new TextRun({ text: "Tone & Qualities: ", bold: true }),
+              new TextRun("Sophisticated, warm, thoughtful, clinical yet approachable, minimal, spacious.\n"),
             ],
+            spacing: { after: 200 },
           }),
 
-          // Section 1: Homepage Copy
+          // SECTION 2: HOMEPAGE
           new Paragraph({
-            text: "1. Homepage Copy",
+            text: "2. Homepage Content",
             heading: HeadingLevel.HEADING_1,
-          }),
-          new Paragraph({
-            text: "Hero Headline:",
-            heading: HeadingLevel.HEADING_3,
+            spacing: { before: 200, after: 100 },
           }),
           new Paragraph({
             children: [
-              new TextRun({
-                text: "Making room for the person behind the diagnosis.",
-                font: "Georgia",
-                size: 26,
-                italic: true,
-                bold: true,
-              }),
+              new TextRun({ text: "Hero Headline: ", bold: true }),
+              new TextRun("Assessment answers one question. Therapy makes room for the questions that follow.\n"),
+              new TextRun({ text: "Supporting Copy: ", bold: true }),
+              new TextRun("Collaborative. Reflective. Relational. A later-in-development diagnosis of autism, ADHD, or neurodivergence is rarely an ending. More often, it is a beginning that asks new questions of the individual and those closest to them.\n"),
             ],
-          }),
-          new Paragraph({
-            text: "Supporting Hero Copy:",
-            heading: HeadingLevel.HEADING_3,
-          }),
-          new Paragraph({
-            text: "Thoughtful, psychodynamic psychotherapy for adults, parents, partners, and families navigating autism diagnosis, identity, and relationships. Led directly by Dr. Antonia B. Krimitsos.",
-          }),
-          new Paragraph({
-            text: "Core Practice Theme:",
-            heading: HeadingLevel.HEADING_3,
+            spacing: { after: 150 },
           }),
           new Paragraph({
             children: [
-              new TextRun({
-                text: "“There is often a period of becoming after a diagnosis—a chance to understand yourself and your relationships with greater compassion.” — Dr. Antonia B. Krimitsos, PsyD",
-                italic: true,
-              }),
+              new TextRun({ text: "Practice Highlight: ", bold: true }),
+              new TextRun("An intentionally small practice. ABK Psychological Services, PLLC was founded as an intentionally small, direct-service practice, ensuring consistent, private, and highly personalized care.\n"),
             ],
+            spacing: { after: 150 },
           }),
           new Paragraph({
-            text: "Intimate Practice Highlight:",
-            heading: HeadingLevel.HEADING_3,
-          }),
-          new Paragraph({
-            text: "ABK Psychological Services, PLLC is a small, intimate telehealth practice. You work exclusively with Dr. Krimitsos—providing a consistent, highly attentive, and private therapeutic space without administrative handoffs.",
-          }),
-          new Paragraph({
-            text: "Clinical Distinction (15+ Years Assessment Experience):",
-            heading: HeadingLevel.HEADING_3,
-          }),
-          new Paragraph({
-            text: "Having spent over 15 years conducting direct clinical autism evaluations in early childhood, Dr. Krimitsos understands firsthand how a diagnosis affects an entire life and family system—reshaping identity, expectations, and relationships. The assessment answers one question. Therapy makes room for the questions that follow.",
+            children: [
+              new TextRun({ text: "Clinical Distinction: ", bold: true }),
+              new TextRun("Clinical depth grounded in both assessment and psychotherapy. For more than two decades, I have worked across two closely connected areas of clinical practice: neurodevelopmental assessment and psychotherapy. My work as a diagnostician in education and as a psychotherapist in private practice has given me a particular appreciation for how and when developmental differences such as autism and ADHD are recognized—and what can happen when they are not.\n"),
+            ],
+            spacing: { after: 200 },
           }),
 
-          // Section 2: Who I Work With
+          // SECTION 3: WHO I WORK WITH
           new Paragraph({
-            text: "2. Who I Work With (Combined Services)",
+            text: "3. Who I Work With",
             heading: HeadingLevel.HEADING_1,
-          }),
-          new Paragraph({
-            text: "Overview Statement:",
-            heading: HeadingLevel.HEADING_3,
-          }),
-          new Paragraph({
-            text: "An autism diagnosis reverberates throughout a person's life and family. Dr. Krimitsos provides dedicated, neurodiversity-affirmative psychotherapy tailored to each distinct experience.",
-          }),
-
-          // Category 1: Adults
-          new Paragraph({
-            text: "A. Autistic Adults & Later-in-Life Diagnosis",
-            heading: HeadingLevel.HEADING_2,
-          }),
-          new Paragraph({
-            text: "Receiving an autism diagnosis in adulthood brings relief and clarity alongside complex questions about past masking, sensory burnout, workplace demands, and authentic self-acceptance. A quiet space to integrate your diagnosis into an authentic, compassionate identity.",
+            spacing: { before: 200, after: 100 },
           }),
           new Paragraph({
             children: [
-              new TextRun({ text: "Key Themes Explored:\n", bold: true }),
-              new TextRun("• Re-examining past memories through a neurodiversity lens\n"),
-              new TextRun("• Navigating masking, energetic burnout, and boundaries\n"),
-              new TextRun("• Fostering authentic self-advocacy and self-compassion\n"),
-              new TextRun("• Processing relief, grief, and identity changes"),
+              new TextRun({ text: "Overview: ", bold: true }),
+              new TextRun("Trying to make sense of a later-in-life neurodevelopmental diagnosis, whether your own or that of someone you love, can feel especially disorienting. It often brings a complex mix of clarity, validation, relief, grief, and uncertainty that can be difficult to integrate into a new understanding of yourself or your loved one.\n"),
             ],
-          }),
-
-          // Category 2: Parents
-          new Paragraph({
-            text: "B. Parents of Autistic Children",
-            heading: HeadingLevel.HEADING_2,
-          }),
-          new Paragraph({
-            text: "When a child receives an autism diagnosis, public focus turns to child services. Parents deserve their own dedicated space to process changing expectations, emotional fatigue, and marriage dynamics. You deserve a therapeutic space focused on your experience as a person and parent.",
+            spacing: { after: 150 },
           }),
           new Paragraph({
             children: [
-              new TextRun({ text: "Key Themes Explored:\n", bold: true }),
-              new TextRun("• Processing the emotional impact of a child's evaluation\n"),
-              new TextRun("• Re-evaluating parenting dreams, expectations, and family roles\n"),
-              new TextRun("• Balancing child advocacy with your own well-being\n"),
-              new TextRun("• Navigating extended family relationships and societal pressure"),
+              new TextRun({ text: "Individuals: ", bold: true }),
+              new TextRun("Those diagnosed as adolescents or adults have already spent years learning to compensate, adapt, or mask their difficulties, often becoming highly capable on the outside while expending considerable effort to manage what others cannot see. My practice can offer meaningful exploration of questions about identity, relationships, work, and the life you have built around strategies and compromises that may no longer serve you. Integrating this new understanding into the person you have always been can allow you to move forward with greater clarity about who you are.\n"),
             ],
-          }),
-
-          // Category 3: Partners
-          new Paragraph({
-            text: "C. Spouses & Partners in Neurodiverse Relationships",
-            heading: HeadingLevel.HEADING_2,
-          }),
-          new Paragraph({
-            text: "An autism diagnosis within a partnership illuminates communication patterns, sensory processing needs, and emotional expression. Therapy helps partners build mutual understanding without blame. Moving past frustration into curious, respectful relational connection.",
+            spacing: { after: 150 },
           }),
           new Paragraph({
             children: [
-              new TextRun({ text: "Key Themes Explored:\n", bold: true }),
-              new TextRun("• Understanding communication breakdowns without blame\n"),
-              new TextRun("• Navigating sensory and emotional processing differences\n"),
-              new TextRun("• Re-evaluating relationship expectations with mutual clarity\n"),
-              new TextRun("• Fostering intimacy and sustainable emotional closeness"),
+              new TextRun({ text: "Parents: ", bold: true }),
+              new TextRun("When your child is diagnosed in early or late adolescence, following years of uncertainty, unanswered questions, or challenges that were difficult to understand, parents may also need space to process what has come before. Addressing parental stress and emotional fatigue, while processing the unique grief of shifting expectations, is worthy of the dedicated space of therapy.\n"),
             ],
-          }),
-
-          // Category 4: Siblings
-          new Paragraph({
-            text: "D. Adult Siblings & Extended Family Members",
-            heading: HeadingLevel.HEADING_2,
-          }),
-          new Paragraph({
-            text: "Adult siblings frequently carry unspoken emotional roles and caregiving expectations. Therapy offers a safe, confidential space to honor your experiences with complete honesty. Your place in the family story matters.",
+            spacing: { after: 150 },
           }),
           new Paragraph({
             children: [
-              new TextRun({ text: "Key Themes Explored:\n", bold: true }),
-              new TextRun("• Unpacking early family expectations and unspoken roles\n"),
-              new TextRun("• Navigating adult responsibilities, guilt, and healthy boundaries\n"),
-              new TextRun("• Creating space for your own identity separate from family roles"),
+              new TextRun({ text: "Partners: ", bold: true }),
+              new TextRun("When neurodivergence enters an adult relationship, whether through a recent diagnosis or a growing recognition of longstanding differences, established perspectives on communication, intimacy, and conflict may shift. Processing how this realization influences the relationship allows for greater understanding of your own needs and experiences within it.\n"),
+              new TextRun({ text: "[Boundary Note]: ABK provides individual psychotherapy for partners, rather than couples or marriage counseling.\n", italic: true }),
             ],
+            spacing: { after: 200 },
           }),
 
-          // Section 3: Therapeutic Approach
+          // SECTION 4: KEY THEMATIC STATEMENT
           new Paragraph({
-            text: "3. Therapeutic Approach",
+            text: "4. Key Thematic Statement",
             heading: HeadingLevel.HEADING_1,
-          }),
-          new Paragraph({
-            text: "Headline: Curious rather than prescriptive.",
-            heading: HeadingLevel.HEADING_2,
-          }),
-          new Paragraph({
-            text: "Therapy provides space to discover what an autism diagnosis means to you and your relationships—rather than dictating what it ought to mean. My goal is not to tell you what your diagnosis should mean. It is to help you understand what it means to you.",
-          }),
-          new Paragraph({
-            text: "3-Part Framework:",
-            heading: HeadingLevel.HEADING_3,
+            spacing: { before: 200, after: 100 },
           }),
           new Paragraph({
             children: [
-              new TextRun({ text: "1. Understand: ", bold: true }),
-              new TextRun("Making room for your full story, including feelings and experiences that have been difficult to name.\n"),
-              new TextRun({ text: "2. Connect: ", bold: true }),
-              new TextRun("Exploring how identity, relationships, attachment patterns, communication, and neurotype intersect.\n"),
-              new TextRun({ text: "3. Change: ", bold: true }),
-              new TextRun("Using deeper self-understanding to create room for authentic choices and healthier ways of relating."),
+              new TextRun({ text: "“The impact of a neurodevelopmental diagnosis rarely belongs to one person alone.”", bold: true, italic: true }),
             ],
+            spacing: { after: 200 },
           }),
 
-          // Section 4: About Dr. Antonia B. Krimitsos (Full Bio)
+          // SECTION 5: ABOUT / BIO & CREDENTIALS
           new Paragraph({
-            text: "4. About Dr. Antonia B. Krimitsos",
+            text: "5. About ABK Psychological Services & Credentials",
             heading: HeadingLevel.HEADING_1,
-          }),
-          new Paragraph({
-            text: "Full Biography & Practice Philosophy:",
-            heading: HeadingLevel.HEADING_2,
-          }),
-          new Paragraph({
-            text: "For more than 21 years, I have worked as a licensed psychologist, with over 15 years devoted directly to early childhood autism assessment. This extensive background has shown me that a diagnosis is never just a technical label. It reverberates throughout a person's life and family—affecting identity, parenting, communication, and hopes for the future.",
-          }),
-          new Paragraph({
-            text: "I earned my Doctor of Psychology (PsyD) degree from George Washington University. My clinical perspective is psychodynamic, warm, and deeply relational.",
-          }),
-          new Paragraph({
-            text: "ABK Psychological Services, PLLC was founded as a small, direct practice. When you reach out, you work exclusively with me. There are no associates, call centers, or administrative handoffs—ensuring consistent, private, and highly personalized care.",
-          }),
-          new Paragraph({
-            text: "My psychotherapy practice focuses on what happens after the assessment: exploring identity, masking, burnout, parenting dynamics, relationship patterns, and meaningful life choices.",
-          }),
-
-          // Section 5: FAQs
-          new Paragraph({
-            text: "5. Frequently Asked Questions (FAQs)",
-            heading: HeadingLevel.HEADING_1,
+            spacing: { before: 200, after: 100 },
           }),
           new Paragraph({
             children: [
-              new TextRun({ text: "Q1: Who does Dr. Krimitsos work with?\n", bold: true }),
-              new TextRun("A: Dr. Krimitsos works directly with adults navigating autism diagnosis, parents of autistic children, spouses and partners in neurodiverse relationships, and adult family members.\n\n"),
-              new TextRun({ text: "Q2: What makes ABK Psychological Services an intimate practice?\n", bold: true }),
-              new TextRun("A: ABK Psychological Services, PLLC is a small, direct private practice. You work exclusively and directly with Dr. Antonia B. Krimitsos—without associates, administrative middle layers, or group handoffs.\n\n"),
-              new TextRun({ text: "Q3: Do you offer diagnostic autism assessments?\n", bold: true }),
-              new TextRun("A: This practice focuses exclusively on psychotherapy. Dr. Krimitsos brings over 15 years of early-childhood autism assessment experience into therapy, but does not offer formal diagnostic testing here.\n\n"),
-              new TextRun({ text: "Q4: What is psychodynamic psychotherapy?\n", bold: true }),
-              new TextRun("A: A reflective approach that explores how past experiences, attachments, and emotional patterns shape your current life and relationships—focusing on self-understanding rather than rigid symptom checklists.\n\n"),
-              new TextRun({ text: "Q5: How is telehealth therapy conducted?\n", bold: true }),
-              new TextRun("A: All sessions are held via a secure, confidential video platform, allowing you to engage in therapy from the comfort and sensory safety of your home.\n\n"),
-              new TextRun({ text: "Q6: What are your fees and insurance policies?\n", bold: true }),
-              new TextRun("A: This is an out-of-network private practice. Fees are discussed transparently during consultation. Monthly superbills are provided for insurance reimbursement upon request."),
+              new TextRun("ABK Psychological Services grew from seeing a particular gap: adolescents and adults whose neurodevelopmental differences were not being identified in childhood.\n\n"),
+              new TextRun("Many have learned to compensate, adapt, or mask well enough, but often, the strategies that made that possible become harder to sustain as life becomes more demanding. In turn, those closest to them frequently share in the impact of those crumbling strategies.\n\n"),
+              new TextRun("I developed ABK to meet that moment. I wanted to create a practice that brings together over 20 years of experience in diagnosis and psychotherapy, with an understanding that later-life identification is not simply about putting a name to longstanding difficulties. It can also be an opportunity to re-examine the life already lived, individually and together, with a clearer understanding of what has been difficult, what has helped, and what may need to change going forward.\n"),
             ],
+            spacing: { after: 150 },
+          }),
+          new Paragraph({
+            children: [
+              new TextRun({ text: "Doctorate: ", bold: true }),
+              new TextRun("Psy.D., Clinical Psychology, The George Washington University, Washington, DC\n"),
+              new TextRun({ text: "Doctoral Internship: ", bold: true }),
+              new TextRun("Lenox Hill Hospital, New York, NY\n"),
+              new TextRun({ text: "Bachelor of Arts: ", bold: true }),
+              new TextRun("Biology-Psychology, Skidmore College, New York\n"),
+              new TextRun({ text: "Licensure: ", bold: true }),
+              new TextRun("Licensed Psychologist, New York State\n"),
+            ],
+            spacing: { after: 200 },
           }),
 
-          // Section 6: Contact & Disclaimers
+          // SECTION 6: CONTACT & DISCLAIMERS
           new Paragraph({
-            text: "6. Contact Inquiries & Disclaimers",
+            text: "6. Inquiries & Practice Boundaries",
             heading: HeadingLevel.HEADING_1,
+            spacing: { before: 200, after: 100 },
           }),
           new Paragraph({
-            text: "Contact Form Intro:",
-            heading: HeadingLevel.HEADING_3,
-          }),
-          new Paragraph({
-            text: "Begin with a conversation. Share a little about what brings you to therapy to determine whether Dr. Krimitsos's approach is a good fit for what you are seeking.",
-          }),
-          new Paragraph({
-            text: "Privacy & Emergency Disclaimers:",
-            heading: HeadingLevel.HEADING_3,
-          }),
-          new Paragraph({
-            text: "• Privacy Notice: Standard web messaging is not HIPAA-secured. Please do not include highly sensitive or confidential clinical details in the initial web form. Submitting an inquiry does not establish a clinical therapist-client relationship.\n• Emergency Notice: In a mental health crisis or life-threatening emergency, call 988 (Suicide & Crisis Lifeline in the US), call 911, or proceed to the nearest emergency room immediately.",
+            children: [
+              new TextRun({ text: "Direct Email: ", bold: true }),
+              new TextRun("dr.antonia@abkpsych.com\n"),
+              new TextRun({ text: "Professional Boundary Disclaimer: ", bold: true }),
+              new TextRun("To maintain clear professional boundaries and avoid conflicts of interest, I do not provide private services to individuals or family members with whom I have an existing professional relationship through another organization.\n"),
+              new TextRun({ text: "Emergency Disclaimer: ", bold: true }),
+              new TextRun("In a crisis or mental health emergency, please call 988 (Crisis Lifeline), call 911, or visit your nearest emergency room immediately.\n"),
+            ],
+            spacing: { after: 200 },
           }),
         ],
       },
     ],
   });
 
-  const outputPath = path.join(__dirname, "../ABK_Psychological_Services_Website_Content.docx");
   const buffer = await Packer.toBuffer(doc);
+  const outputPath = path.join(process.cwd(), 'ABK_Psychological_Services_Website_Content.docx');
   fs.writeFileSync(outputPath, buffer);
   console.log(`Successfully generated docx at: ${outputPath}`);
 }
 
-generateDocx().catch((err) => {
-  console.error("Error generating docx:", err);
-  process.exit(1);
-});
+buildDocx();

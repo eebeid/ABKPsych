@@ -26,18 +26,17 @@ export function Header() {
   const navItems = [
     { name: "Home", href: "/" },
     { name: "Who I Work With", href: "/who-i-work-with" },
-    { name: "Approach", href: "/approach" },
     { name: "About", href: "/about" },
-    { name: "FAQ", href: "/faq" },
     { name: "Contact", href: "/contact" },
+    { name: "FAQ", href: "/faq" },
   ];
 
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#253344]/95 backdrop-blur-md border-b border-[#3B4C61] shadow-md py-3 text-[#FAFAFA]"
-          : "bg-[#253344] py-4 border-b border-[#3B4C61]/80 text-[#FAFAFA]"
+          ? "bg-[#F9F8F5]/95 backdrop-blur-md border-b border-[#E2E6E2] shadow-xs py-3.5"
+          : "bg-[#F9F8F5] py-5 border-b border-[#E2E6E2]/70"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -45,31 +44,31 @@ export function Header() {
         <Link
           href="/"
           className="group flex flex-col focus:outline-none"
-          aria-label="abk psychological services, pllc Homepage"
+          aria-label="ABK Psychological Services, PLLC Homepage"
         >
-          <span className="font-serif text-lg sm:text-xl font-medium tracking-tight text-[#FAFAFA] lowercase group-hover:text-[#9BB1CB] transition-colors">
+          <span className="font-serif text-lg sm:text-xl font-medium tracking-tight text-[#1C241E] group-hover:text-[#4F6752] transition-colors">
             {practiceConfig.practiceName}
           </span>
-          <span className="text-[11px] uppercase tracking-widest text-[#B8C5D6] font-semibold">
-            {practiceConfig.doctorTitle} · Telehealth
+          <span className="text-[11px] uppercase tracking-widest text-[#6B826E] font-semibold">
+            {practiceConfig.psychologistName}
           </span>
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center space-x-7" aria-label="Main Navigation">
+        <nav className="hidden lg:flex items-center space-x-8" aria-label="Main Navigation">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-xs font-semibold uppercase tracking-wider transition-colors hover:text-[#9BB1CB] relative py-1 ${
-                  isActive ? "text-[#9BB1CB]" : "text-[#FAFAFA]"
+                className={`text-xs font-medium uppercase tracking-wider transition-colors hover:text-[#4F6752] relative py-1 ${
+                  isActive ? "text-[#4F6752] font-semibold" : "text-[#1C241E]"
                 }`}
               >
                 {item.name}
                 {isActive && (
-                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#9BB1CB] rounded-full" />
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#4F6752] rounded-full" />
                 )}
               </Link>
             );
@@ -80,9 +79,9 @@ export function Header() {
         <div className="hidden md:flex items-center space-x-4">
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#FAFAFA] bg-[#3B4C61] hover:bg-[#4C607A] border border-[#7A8DA6]/50 rounded-sm transition-all shadow-xs focus:outline-none focus:ring-2 focus:ring-[#9BB1CB]"
+            className="inline-flex items-center justify-center px-5 py-2.5 text-xs font-medium uppercase tracking-wider text-[#FFFFFF] bg-[#4F6752] hover:bg-[#3E5341] rounded-sm transition-all shadow-xs focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
           >
-            Begin a Conversation
+            Schedule a Consultation
             <ArrowRight className="ml-1.5 w-3.5 h-3.5" />
           </Link>
         </div>
@@ -91,14 +90,14 @@ export function Header() {
         <div className="flex lg:hidden items-center space-x-3">
           <Link
             href="/contact"
-            className="md:hidden inline-flex items-center justify-center px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#FAFAFA] bg-[#3B4C61] rounded-sm"
+            className="md:hidden inline-flex items-center justify-center px-3 py-1.5 text-[11px] font-medium uppercase tracking-wider text-[#FFFFFF] bg-[#4F6752] rounded-sm"
           >
-            Contact
+            Consultation
           </Link>
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-[#FAFAFA] hover:text-[#9BB1CB] rounded-md transition-colors"
+            className="p-2 text-[#1C241E] hover:text-[#4F6752] rounded-md transition-colors"
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           >
@@ -109,18 +108,18 @@ export function Header() {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#1E2938] border-b border-[#3B4C61] px-4 pt-3 pb-5 space-y-2 animate-fade-in text-[#FAFAFA]">
-          <div className="flex flex-col space-y-1 pb-3 border-b border-[#3B4C61]">
+        <div className="lg:hidden bg-[#FFFFFF] border-b border-[#E2E6E2] px-4 pt-3 pb-5 space-y-2 animate-fade-in shadow-sm">
+          <div className="flex flex-col space-y-1 pb-3 border-b border-[#E2E6E2]">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                  className={`px-3 py-2.5 text-sm font-medium rounded-sm transition-colors ${
                     isActive
-                      ? "bg-[#3B4C61] text-[#FAFAFA] font-semibold"
-                      : "text-[#D5E0ED] hover:bg-[#253344]"
+                      ? "bg-[#EFF3EF] text-[#4F6752] font-semibold"
+                      : "text-[#1C241E] hover:bg-[#F9F8F5]"
                   }`}
                 >
                   {item.name}
@@ -131,9 +130,9 @@ export function Header() {
           <div className="pt-2">
             <Link
               href="/contact"
-              className="w-full inline-flex items-center justify-center px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#FAFAFA] bg-[#3B4C61] hover:bg-[#4C607A] rounded-sm transition-colors"
+              className="w-full inline-flex items-center justify-center px-4 py-3 text-xs font-medium uppercase tracking-wider text-[#FFFFFF] bg-[#4F6752] hover:bg-[#3E5341] rounded-sm transition-colors"
             >
-              Begin a Conversation
+              Schedule a Consultation
               <ArrowRight className="ml-1.5 w-3.5 h-3.5" />
             </Link>
           </div>

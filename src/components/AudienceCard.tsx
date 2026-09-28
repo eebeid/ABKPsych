@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, UserCheck, HeartHandshake, Users, Sparkles } from "lucide-react";
+import { ArrowRight, UserCheck, HeartHandshake, Users } from "lucide-react";
 import { AudienceInfo } from "@/config/practiceConfig";
 
 interface AudienceCardProps {
@@ -9,44 +9,42 @@ interface AudienceCardProps {
 export function AudienceCard({ audience }: AudienceCardProps) {
   const getIcon = (id: string) => {
     switch (id) {
-      case "adults":
-        return <UserCheck className="w-5 h-5 text-[#3B4C61]" />;
+      case "individuals":
+        return <UserCheck className="w-5 h-5 text-[#4F6752]" />;
       case "parents":
-        return <HeartHandshake className="w-5 h-5 text-[#3B4C61]" />;
+        return <HeartHandshake className="w-5 h-5 text-[#4F6752]" />;
       case "partners":
-        return <Users className="w-5 h-5 text-[#3B4C61]" />;
-      case "siblings":
-        return <Sparkles className="w-5 h-5 text-[#3B4C61]" />;
+        return <Users className="w-5 h-5 text-[#4F6752]" />;
       default:
-        return <UserCheck className="w-5 h-5 text-[#3B4C61]" />;
+        return <UserCheck className="w-5 h-5 text-[#4F6752]" />;
     }
   };
 
   const targetLink = `/who-i-work-with${audience.anchor}`;
 
   return (
-    <article className="editorial-card p-6 rounded-sm flex flex-col justify-between h-full group border border-[#3B4C61]/20 hover:border-[#3B4C61]">
+    <article className="editorial-card p-7 rounded-sm flex flex-col justify-between h-full group border border-[#E2E6E2] hover:border-[#4F6752]/50">
       <div>
-        <div className="w-10 h-10 rounded-full bg-[#EBF0F5] border border-[#7A8DA6]/30 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+        <div className="w-10 h-10 rounded-full bg-[#EFF3EF] flex items-center justify-center mb-5 group-hover:bg-[#4F6752] group-hover:text-[#FFFFFF] transition-all duration-300">
           {getIcon(audience.id)}
         </div>
-        <h3 className="font-serif text-xl text-[#181A1D] mb-1.5 group-hover:text-[#3B4C61] transition-colors">
+        <h3 className="font-serif text-2xl text-[#1C241E] mb-2 group-hover:text-[#4F6752] transition-colors">
           {audience.title}
         </h3>
-        <p className="text-[11px] uppercase tracking-wider text-[#3B4C61] font-semibold mb-3">
+        <p className="text-[11px] uppercase tracking-wider text-[#6B826E] font-semibold mb-3">
           {audience.subtitle}
         </p>
-        <p className="text-xs text-[#4A5056] leading-relaxed mb-4">
+        <p className="text-xs text-[#4A544C] leading-relaxed mb-6 font-light">
           {audience.summary}
         </p>
       </div>
 
-      <div className="pt-3 border-t border-[#E8E3DF]">
+      <div className="pt-4 border-t border-[#E2E6E2]">
         <Link
           href={targetLink}
-          className="inline-flex items-center text-[11px] font-semibold uppercase tracking-wider text-[#3B4C61] group-hover:text-[#253344] transition-colors"
+          className="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-[#4F6752] group-hover:text-[#3E5341] transition-colors"
         >
-          Explore Therapy Details
+          Read Details
           <ArrowRight className="ml-1.5 w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>

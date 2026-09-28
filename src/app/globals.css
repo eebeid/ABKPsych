@@ -1,23 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  /* Prominent Slate Velvet Blue Palette Tokens */
-  --color-slate-blue-deep: #253344;   /* Deep Slate Navy for banners & footers */
-  --color-slate-blue: #3B4C61;        /* Primary Slate Navy (Buttons & Accents) */
-  --color-slate-blue-light: #EBF0F5;  /* Soft Blue Wash for background highlights */
-  --color-slate-blue-border: #7A8DA6; /* Muted Navy Blue border */
-  
-  --color-warm-ivory: #EAE8E5;        /* Light Pearl Grey background */
-  --color-soft-paper: #FAFAFA;        /* Soft Paper card surface */
-  --color-charcoal: #181A1D;          /* Rich Velvet Charcoal Text */
-  --color-charcoal-light: #4A5056;    /* Muted Charcoal text */
-  
-  --color-warm-clay: #7A6B5D;         /* Deep Walnut Taupe (Secondary Accent) */
-  --color-warm-border: #D5CECB;       /* Warm Greige Border */
-  --color-soft-border: #E8E3DF;       /* Soft Light Border */
+  /* Minimalist Sage Green Palette Tokens */
+  --color-sage-dark: #3E5341;        /* Deep Forest Sage for dark sections & CTAs */
+  --color-sage-primary: #4F6752;     /* Core Warm Sage Green */
+  --color-sage-muted: #6B826E;       /* Muted Sage Accent */
+  --color-sage-wash: #EFF3EF;        /* Soft Sage Light Wash for cards/sections */
+  --color-sage-border: #C8D4C9;      /* Light Sage Border */
+
+  --color-linen-bg: #F9F8F5;         /* Minimal Linen Canvas Background */
+  --color-paper-white: #FFFFFF;      /* Clean White Surface Fill */
+  --color-charcoal: #1C241E;         /* Deep Warm Charcoal Text */
+  --color-charcoal-muted: #4A544C;   /* Readability Muted Charcoal Body Text */
+
+  --color-taupe-accent: #8A7F6E;     /* Warm Taupe Accent */
+  --color-taupe-light: #F3F1EC;      /* Soft Taupe Wash */
+  --color-border-light: #E2E6E2;     /* Subtle Light Divider */
 
   /* Default CSS Theme bindings */
-  --background: var(--color-warm-ivory);
+  --background: var(--color-linen-bg);
   --foreground: var(--color-charcoal);
 
   /* Fonts */
@@ -26,19 +27,20 @@
 }
 
 @theme inline {
-  --color-slate-blue-deep: #253344;
-  --color-slate-blue: #3B4C61;
-  --color-slate-blue-light: #EBF0F5;
-  --color-slate-blue-border: #7A8DA6;
+  --color-sage-dark: #3E5341;
+  --color-sage-primary: #4F6752;
+  --color-sage-muted: #6B826E;
+  --color-sage-wash: #EFF3EF;
+  --color-sage-border: #C8D4C9;
 
-  --color-warm-ivory: #EAE8E5;
-  --color-soft-paper: #FAFAFA;
-  --color-charcoal: #181A1D;
-  --color-charcoal-light: #4A5056;
+  --color-linen-bg: #F9F8F5;
+  --color-paper-white: #FFFFFF;
+  --color-charcoal: #1C241E;
+  --color-charcoal-muted: #4A544C;
 
-  --color-warm-clay: #7A6B5D;
-  --color-warm-border: #D5CECB;
-  --color-soft-border: #E8E3DF;
+  --color-taupe-accent: #8A7F6E;
+  --color-taupe-light: #F3F1EC;
+  --color-border-light: #E2E6E2;
 
   --font-serif: var(--font-serif-family, Georgia, serif);
   --font-sans: var(--font-sans-family, system-ui, sans-serif);
@@ -51,10 +53,10 @@ html {
 }
 
 body {
-  background-color: var(--color-warm-ivory);
+  background-color: var(--color-linen-bg);
   color: var(--color-charcoal);
   font-family: var(--font-sans);
-  line-height: 1.7;
+  line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -63,12 +65,12 @@ body {
 h1, h2, h3, h4, .font-serif-editorial {
   font-family: var(--font-serif);
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 
 /* Focus indicator for high accessibility */
 *:focus-visible {
-  outline: 2px solid var(--color-slate-blue);
+  outline: 2px solid var(--color-sage-primary);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -79,16 +81,16 @@ h1, h2, h3, h4, .font-serif-editorial {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-slate-blue-deep);
+  background: var(--color-linen-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-slate-blue-border);
+  background: var(--color-sage-border);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-slate-blue);
+  background: var(--color-sage-primary);
 }
 
 /* Reduced Motion Safety */
@@ -105,7 +107,7 @@ h1, h2, h3, h4, .font-serif-editorial {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -114,17 +116,17 @@ h1, h2, h3, h4, .font-serif-editorial {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Card hover soft shadows */
+/* Minimalist card hover */
 .editorial-card {
-  background-color: var(--color-soft-paper);
-  border: 1px solid var(--color-warm-border);
+  background-color: var(--color-paper-white);
+  border: 1px solid var(--color-border-light);
   transition: all 0.3s ease;
 }
 
 .editorial-card:hover {
-  border-color: var(--color-slate-blue);
-  box-shadow: 0 10px 30px -10px rgba(37, 51, 68, 0.15);
+  border-color: var(--color-sage-muted);
+  box-shadow: 0 12px 32px -12px rgba(62, 83, 65, 0.08);
 }

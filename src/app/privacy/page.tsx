@@ -1,40 +1,40 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | abk psychological services, pllc",
-  description: "Privacy Policy and HIPAA Notice for abk psychological services, pllc and Dr. Antonia B. Krimitsos.",
+  title: "Privacy Policy | ABK Psychological Services, PLLC",
+  description: "Privacy Policy and Notice of Privacy Practices for ABK Psychological Services, PLLC.",
 };
 
 export default function PrivacyPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8 text-sm text-[#4A5056] leading-relaxed">
-      <div className="border-b border-[#D5CECB] pb-6 space-y-2">
-        <h1 className="font-serif text-3xl sm:text-4xl text-[#181A1D]">
-          Privacy Policy & HIPAA Notice
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-8 text-sm text-[#4A544C] leading-relaxed font-light">
+      <div className="border-b border-[#E2E6E2] pb-6 space-y-2">
+        <h1 className="font-serif text-3xl sm:text-4xl text-[#1C241E]">
+          Privacy Policy
         </h1>
-        <p className="text-xs uppercase tracking-wider text-[#3F5166] font-semibold">
-          abk psychological services, pllc
+        <p className="text-xs uppercase tracking-wider text-[#4F6752] font-semibold">
+          ABK Psychological Services, PLLC
         </p>
       </div>
 
       <section className="space-y-3">
-        <h2 className="font-serif text-xl text-[#181A1D]">Website Information Collection</h2>
+        <h2 className="font-serif text-xl text-[#1C241E]">Information Collection & Use</h2>
         <p>
-          We respect your privacy. abk psychological services, pllc collects minimal personal data—specifically information you voluntarily submit through our preliminary contact form (such as your name, email address, phone number, location, and inquiry summary). We do not sell or share visitor information.
+          We respect your privacy. ABK Psychological Services, PLLC collects minimal personal data—specifically information you voluntarily submit through our preliminary contact form (such as your name, email address, phone number, location, and inquiry focus). We do not sell or share visitor information.
         </p>
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-serif text-xl text-[#181A1D]">Email & Form Submissions</h2>
+        <h2 className="font-serif text-xl text-[#1C241E]">Email Communications</h2>
         <p>
-          Submitting a message via our web form prepopulates an email to <strong>dr.antonia@abkpsych.com</strong>. Standard internet email is not entirely secure or HIPAA-encrypted prior to transmission. Please do not submit highly sensitive health details through standard email.
+          Submitting an inquiry via our contact form opens an email to <strong>dr.antonia@abkpsych.com</strong>. Standard internet email is not fully encrypted. Please do not include highly sensitive medical details in preliminary messages.
         </p>
       </section>
 
       <section className="space-y-3" id="notice">
-        <h2 className="font-serif text-xl text-[#181A1D]">Clinical Confidentiality (HIPAA)</h2>
+        <h2 className="font-serif text-xl text-[#1C241E]">Clinical Privacy (HIPAA)</h2>
         <p>
-          Once a formal clinical relationship is established, all telehealth psychotherapy sessions and records are protected under federal HIPAA regulations and state clinical licensing ethics.
+          Once a formal clinical relationship is established, all psychotherapy records and communications are protected under federal HIPAA laws and state licensing standards.
         </p>
       </section>
     </div>

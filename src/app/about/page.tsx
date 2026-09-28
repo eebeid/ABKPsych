@@ -31,7 +31,7 @@ export default function AboutPage() {
           <div className="lg:col-span-5 space-y-6 sticky top-28">
             <div className="relative rounded-sm overflow-hidden border border-[#E2E6E2] shadow-xs max-w-md mx-auto lg:max-w-none">
               <Image
-                src="/images/doctor-portrait.png"
+                src="/images/doctor-portrait-v2.png"
                 alt="Dr. Antonia B. Krimitsos - ABK Psychological Services, PLLC"
                 width={600}
                 height={750}

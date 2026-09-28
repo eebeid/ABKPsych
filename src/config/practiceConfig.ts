@@ -53,7 +53,7 @@ export const practiceConfig: PracticeConfig = {
   insurancePolicy: "Services are provided privately and directly. Out-of-network superbills provided upon request.",
   superbillPolicy: "Monthly superbills provided for out-of-network insurance reimbursement.",
   schedulingURL: "#contact",
-  professionalPhoto: "/images/doctor-portrait.png",
+  professionalPhoto: "/images/doctor-portrait-v2.png",
   officeAddress: "Telehealth Psychotherapy Practice",
   privacyPolicyURL: "/privacy",
   noticeOfPrivacyPracticesURL: "/privacy#notice",

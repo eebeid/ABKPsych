@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/doctor-portrait.png",
+        url: "/images/doctor-portrait-v2.png",
         width: 1200,
         height: 630,
         alt: `${practiceConfig.psychologistName} - Autism-Focused Psychotherapy Practice`,

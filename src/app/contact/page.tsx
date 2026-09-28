@@ -54,7 +54,9 @@ export default function ContactPage() {
                   <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[#4F6752]">
                     Direct Email
                   </strong>
-                  {practiceConfig.email}
+                  <a href={`mailto:${practiceConfig.email}`} className="text-[#4F6752] hover:underline font-medium">
+                    {practiceConfig.email}
+                  </a>
                 </div>
 
                 <div>

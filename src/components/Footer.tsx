@@ -88,7 +88,7 @@ export function Footer() {
               <li>Out-of-Network Superbills Provided</li>
             </ul>
             <div className="mt-4 pt-3 border-t border-[#343E36] text-xs text-[#CBD4CB]">
-              <p>Email: {practiceConfig.email}</p>
+              <p>Email: <a href={`mailto:${practiceConfig.email}`} className="text-[#A3B8A5] hover:underline font-medium">{practiceConfig.email}</a></p>
             </div>
           </div>
 

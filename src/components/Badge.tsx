@@ -8,7 +8,7 @@ interface BadgeProps {
 
 export function Badge({ children, variant = "sage", className = "" }: BadgeProps) {
   const variantStyles = {
-    sage: "bg-[#EFF3EF] text-[#4F6752] border-[#C8D4C9]",
+    sage: "bg-[var(--accent-wash)] text-[var(--accent-primary)] border-[var(--accent-border)]",
     taupe: "bg-[#F3F1EC] text-[#8A7F6E] border-[#DCE2DC]",
     neutral: "bg-[#FFFFFF] text-[#1C241E] border-[#E2E6E2]",
   };

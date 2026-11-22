@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ArrowRight } from "lucide-react";
+import { FormattedText } from "@/components/FormattedText";
 import { getContent } from "@/lib/contentStore";
 
 export const dynamic = "force-dynamic";
@@ -20,7 +21,7 @@ export default function FAQPage() {
       {/* Header Section */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#1C241E]">
-          Frequently Asked Questions
+          <FormattedText content={content.faqTitle} />
         </h1>
         <p className="text-base text-[#4A544C] max-w-2xl mx-auto font-light leading-relaxed">
           Information about practice fit, individual partner boundaries, fees, and starting therapy with {content.doctorTitle}.
@@ -33,7 +34,7 @@ export default function FAQPage() {
       </section>
 
       {/* Bottom Contact CTA */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-[#EFF3EF] border border-[#C8D4C9] p-8 sm:p-10 rounded-sm space-y-4">
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-[var(--accent-wash)] border border-[var(--accent-border)] p-8 sm:p-10 rounded-sm space-y-4">
         <h2 className="font-serif text-2xl text-[#1C241E]">
           Have an inquiry about working together?
         </h2>
@@ -43,7 +44,7 @@ export default function FAQPage() {
         <div className="pt-2">
           <Link
             href="/contact"
-            className="inline-flex items-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#FFFFFF] bg-[#4F6752] hover:bg-[#3E5341] rounded-sm transition-colors shadow-xs"
+            className="inline-flex items-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#FFFFFF] bg-[var(--accent-primary)] hover:bg-[var(--accent-dark)] rounded-sm transition-colors shadow-xs"
           >
             Schedule a Consultation
             <ArrowRight className="ml-2 w-4 h-4" />

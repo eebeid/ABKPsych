@@ -8,6 +8,7 @@ const CONTENT_FILE = path.join(DATA_DIR, "content.json");
 
 export type EditableContent = {
   // ── Practice meta ──
+  themePalette: string;
   practiceName: string;
   psychologistName: string;
   doctorTitle: string;
@@ -41,6 +42,11 @@ export type EditableContent = {
   clinicalDistinctionPara2: string;
   ctaHeadline: string;
   ctaBody: string;
+  // ── Page Titles ──
+  aboutTitle: string;
+  whoIWorkWithTitle: string;
+  faqTitle: string;
+  contactTitle: string;
   // ── About page ──
   aboutSubtitle: string;
   aboutOpening: string;
@@ -75,6 +81,7 @@ export const CONTENT_FILE_PATH = CONTENT_FILE;
 export function defaultContent(): EditableContent {
   return {
     // Practice meta
+    themePalette: "taupe",
     practiceName: practiceConfig.practiceName,
     psychologistName: practiceConfig.psychologistName,
     doctorTitle: practiceConfig.doctorTitle,
@@ -116,6 +123,11 @@ export function defaultContent(): EditableContent {
     ctaHeadline: "Schedule an Initial Consultation",
     ctaBody:
       "Connect directly with Dr. Krimitsos to discuss psychotherapy for yourself, your child, or your relationship in a thoughtful, confidential setting.",
+    // Page Titles
+    aboutTitle: `About ${practiceConfig.practiceName}`,
+    whoIWorkWithTitle: "Who I Work With",
+    faqTitle: "Frequently Asked Questions",
+    contactTitle: "Inquiries",
     // About page
     aboutSubtitle:
       "Bringing together over 20+ years of clinical experience in diagnosis and psychotherapy.",

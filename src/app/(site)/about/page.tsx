@@ -20,7 +20,7 @@ export default function AboutPage() {
       {/* Header Section */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#1C241E]">
-          About {content.practiceName}
+          <FormattedText content={content.aboutTitle} />
         </h1>
         {content.aboutSubtitle && (
           <p className="text-base sm:text-lg text-[#4A544C] max-w-2xl mx-auto font-light leading-relaxed">
@@ -62,7 +62,7 @@ export default function AboutPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs text-[#4A544C]">
                 <div className="space-y-1">
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[#4F6752]">
+                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Doctorate
                   </strong>
                   <p className="font-serif text-sm text-[#1C241E]">{content.degree}</p>
@@ -70,21 +70,21 @@ export default function AboutPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[#4F6752]">
+                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Doctoral Internship
                   </strong>
                   <p className="font-serif text-sm text-[#1C241E]">{content.internship}</p>
                 </div>
 
                 <div className="space-y-1">
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[#4F6752]">
+                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Bachelor of Arts
                   </strong>
                   <p className="font-serif text-sm text-[#1C241E]">{content.bachelors}</p>
                 </div>
 
                 <div className="space-y-1">
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[#4F6752]">
+                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Licensure
                   </strong>
                   <p className="font-serif text-sm text-[#1C241E]">{content.licensure}</p>
@@ -96,7 +96,7 @@ export default function AboutPage() {
             <div className="pt-6">
               <Link
                 href="/contact"
-                className="inline-flex items-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#FFFFFF] bg-[#4F6752] hover:bg-[#3E5341] rounded-sm transition-colors shadow-xs"
+                className="inline-flex items-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#FFFFFF] bg-[var(--accent-primary)] hover:bg-[var(--accent-dark)] rounded-sm transition-colors shadow-xs"
               >
                 Schedule a Consultation
                 <ArrowRight className="ml-2 w-4 h-4" />

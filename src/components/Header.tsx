@@ -52,10 +52,10 @@ export function Header({
           className="group flex flex-col focus:outline-none"
           aria-label="ABK Psychological Services, PLLC Homepage"
         >
-          <span className="font-serif text-lg sm:text-xl font-medium tracking-tight text-[#1C241E] group-hover:text-[#4F6752] transition-colors">
+          <span className="font-serif text-lg sm:text-xl font-medium tracking-tight text-[#1C241E] group-hover:text-[var(--accent-primary)] transition-colors">
             {practiceName}
           </span>
-          <span className="text-[11px] uppercase tracking-widest text-[#6B826E] font-semibold">
+          <span className="text-[11px] uppercase tracking-widest text-[var(--accent-muted)] font-semibold">
             {psychologistName}
           </span>
         </Link>
@@ -68,13 +68,13 @@ export function Header({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-xs font-medium uppercase tracking-wider transition-colors hover:text-[#4F6752] relative py-1 ${
-                  isActive ? "text-[#4F6752] font-semibold" : "text-[#1C241E]"
+                className={`text-xs font-medium uppercase tracking-wider transition-colors hover:text-[var(--accent-primary)] relative py-1 ${
+                  isActive ? "text-[var(--accent-primary)] font-semibold" : "text-[#1C241E]"
                 }`}
               >
                 {item.name}
                 {isActive && (
-                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#4F6752] rounded-full" />
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[var(--accent-primary)] rounded-full" />
                 )}
               </Link>
             );
@@ -85,7 +85,7 @@ export function Header({
         <div className="hidden md:flex items-center space-x-4">
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center px-5 py-2.5 text-xs font-medium uppercase tracking-wider text-[#FFFFFF] bg-[#4F6752] hover:bg-[#3E5341] rounded-sm transition-all shadow-xs focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
+            className="inline-flex items-center justify-center px-5 py-2.5 text-xs font-medium uppercase tracking-wider text-[#FFFFFF] bg-[var(--accent-primary)] hover:bg-[var(--accent-dark)] rounded-sm transition-all shadow-xs focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
           >
             Schedule a Consultation
             <ArrowRight className="ml-1.5 w-3.5 h-3.5" />
@@ -96,14 +96,14 @@ export function Header({
         <div className="flex lg:hidden items-center space-x-3">
           <Link
             href="/contact"
-            className="md:hidden inline-flex items-center justify-center px-3 py-1.5 text-[11px] font-medium uppercase tracking-wider text-[#FFFFFF] bg-[#4F6752] rounded-sm"
+            className="md:hidden inline-flex items-center justify-center px-3 py-1.5 text-[11px] font-medium uppercase tracking-wider text-[#FFFFFF] bg-[var(--accent-primary)] rounded-sm"
           >
             Consultation
           </Link>
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-[#1C241E] hover:text-[#4F6752] rounded-md transition-colors"
+            className="p-2 text-[#1C241E] hover:text-[var(--accent-primary)] rounded-md transition-colors"
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           >
@@ -124,7 +124,7 @@ export function Header({
                   href={item.href}
                   className={`px-3 py-2.5 text-sm font-medium rounded-sm transition-colors ${
                     isActive
-                      ? "bg-[#EFF3EF] text-[#4F6752] font-semibold"
+                      ? "bg-[var(--accent-wash)] text-[var(--accent-primary)] font-semibold"
                       : "text-[#1C241E] hover:bg-[#F9F8F5]"
                   }`}
                 >
@@ -136,7 +136,7 @@ export function Header({
           <div className="pt-2">
             <Link
               href="/contact"
-              className="w-full inline-flex items-center justify-center px-4 py-3 text-xs font-medium uppercase tracking-wider text-[#FFFFFF] bg-[#4F6752] hover:bg-[#3E5341] rounded-sm transition-colors"
+              className="w-full inline-flex items-center justify-center px-4 py-3 text-xs font-medium uppercase tracking-wider text-[#FFFFFF] bg-[var(--accent-primary)] hover:bg-[var(--accent-dark)] rounded-sm transition-colors"
             >
               Schedule a Consultation
               <ArrowRight className="ml-1.5 w-3.5 h-3.5" />

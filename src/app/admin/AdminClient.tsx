@@ -36,6 +36,7 @@ import {
   Code,
 } from "lucide-react";
 import type { EditableContent } from "@/lib/contentStore";
+import { THEME_PALETTES } from "@/lib/palettes";
 import { FormattedText } from "@/components/FormattedText";
 
 /* ─── Shared field components ────────────────────────── */
@@ -621,6 +622,12 @@ function AboutEditor({
       <div className="card-panel space-y-5">
         <SectionDivider label="Page Header & Biography" />
         <Field
+          label="Main Page Title"
+          value={content.aboutTitle}
+          onChange={(v) => set("aboutTitle", v)}
+          wysiwyg
+        />
+        <Field
           label="Page Subtitle"
           value={content.aboutSubtitle}
           onChange={(v) => set("aboutSubtitle", v)}
@@ -717,7 +724,13 @@ function WhoEditor({
         href="/who-i-work-with"
       />
       <div className="card-panel space-y-5">
-        <SectionDivider label="Page Introduction" />
+        <SectionDivider label="Page Header & Introduction" />
+        <Field
+          label="Main Page Title"
+          value={content.whoIWorkWithTitle}
+          onChange={(v) => set("whoIWorkWithTitle", v)}
+          wysiwyg
+        />
         <Field
           label="Introductory Paragraph"
           value={content.whoIWorkWithIntro}
@@ -851,6 +864,15 @@ function FAQEditor({
         description="Frequently asked questions displayed on the FAQ page."
         href="/faq"
       />
+      <div className="card-panel space-y-5">
+        <SectionDivider label="Page Header" />
+        <Field
+          label="Main Page Title"
+          value={content.faqTitle}
+          onChange={(v) => set("faqTitle", v)}
+          wysiwyg
+        />
+      </div>
       {content.faq.map((item, fi) => (
         <div key={item.id} className="card-panel space-y-4">
           <div className="flex items-center justify-between">
@@ -941,7 +963,13 @@ function ContactEditor({
         href="/contact"
       />
       <div className="card-panel space-y-5">
-        <SectionDivider label="Contact Details" />
+        <SectionDivider label="Page Header & Contact Details" />
+        <Field
+          label="Main Page Title"
+          value={content.contactTitle}
+          onChange={(v) => set("contactTitle", v)}
+          wysiwyg
+        />
         <Field
           label="Email Address"
           value={content.email}
@@ -993,9 +1021,73 @@ function SettingsEditor({
     <div className="space-y-6">
       <PageHeader
         title="Practice Settings"
-        description="Core practice details used throughout the entire site."
+        description="Core practice details and website theme palette."
         href="#"
       />
+      <div className="card-panel space-y-5">
+        <SectionDivider label="Website Color Palette" />
+        <p className="text-xs text-[#6B826E]">
+          Choose the overall accent color palette for the public website. Click Save Changes to apply.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {THEME_PALETTES.map((palette) => {
+            const selected = (content.themePalette || "taupe") === palette.id;
+            return (
+              <button
+                key={palette.id}
+                type="button"
+                onClick={() => set("themePalette", palette.id)}
+                className={`text-left p-3.5 rounded-sm border transition-all ${
+                  selected
+                    ? "border-[#1C241E] ring-2 ring-[#1C241E]/20 bg-[#FAF9F6]"
+                    : "border-[#E2E6E2] hover:border-[#ADB8AE] bg-white"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-semibold text-[#1C241E]">
+                    {palette.name}
+                  </span>
+                  {selected && (
+                    <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-[#1C241E] text-white">
+                      Active
+                    </span>
+                  )}
+                </div>
+                <p className="text-[11px] text-[#6B826E] mb-3">
+                  {palette.description}
+                </p>
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className="w-6 h-6 rounded-sm border border-black/10"
+                    style={{ backgroundColor: palette.primary }}
+                    title="Primary"
+                  />
+                  <span
+                    className="w-6 h-6 rounded-sm border border-black/10"
+                    style={{ backgroundColor: palette.dark }}
+                    title="Dark"
+                  />
+                  <span
+                    className="w-6 h-6 rounded-sm border border-black/10"
+                    style={{ backgroundColor: palette.muted }}
+                    title="Muted"
+                  />
+                  <span
+                    className="w-6 h-6 rounded-sm border border-black/10"
+                    style={{ backgroundColor: palette.wash }}
+                    title="Soft Wash"
+                  />
+                  <span
+                    className="w-6 h-6 rounded-sm border border-black/10"
+                    style={{ backgroundColor: palette.border }}
+                    title="Border"
+                  />
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
       <div className="card-panel space-y-5">
         <SectionDivider label="Identity" />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -62,8 +62,8 @@ export function ContactForm({
   if (submitted) {
     const mailtoUrl = constructMailtoLink();
     return (
-      <div className="bg-[#FFFFFF] border border-[#4F6752] rounded-sm p-8 sm:p-12 text-center space-y-6 animate-fade-in shadow-xs">
-        <div className="w-14 h-14 bg-[#EFF3EF] text-[#4F6752] rounded-full flex items-center justify-center mx-auto">
+      <div className="bg-[#FFFFFF] border border-[var(--accent-primary)] rounded-sm p-8 sm:p-12 text-center space-y-6 animate-fade-in shadow-xs">
+        <div className="w-14 h-14 bg-[var(--accent-wash)] text-[var(--accent-primary)] rounded-full flex items-center justify-center mx-auto">
           <CheckCircle2 className="w-8 h-8" />
         </div>
 
@@ -89,7 +89,7 @@ export function ContactForm({
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
           <a
             href={mailtoUrl}
-            className="inline-flex items-center px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#FFFFFF] bg-[#4F6752] hover:bg-[#3E5341] rounded-sm transition-colors shadow-xs"
+            className="inline-flex items-center px-6 py-3 text-xs font-semibold uppercase tracking-wider text-[#FFFFFF] bg-[var(--accent-primary)] hover:bg-[var(--accent-dark)] rounded-sm transition-colors shadow-xs"
           >
             <Mail className="w-4 h-4 mr-2" />
             Open Email Application Again
@@ -136,7 +136,7 @@ export function ContactForm({
             placeholder="Full Name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
+            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
           />
         </div>
 
@@ -153,14 +153,14 @@ export function ContactForm({
             placeholder="email@example.com"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
+            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
           />
         </div>
 
         {/* Phone Number */}
         <div className="space-y-2">
           <label htmlFor="phone" className="block text-xs font-semibold uppercase tracking-wider text-[#1C241E]">
-            Phone Number <span className="text-[#6B826E] font-normal">(Optional)</span>
+            Phone Number <span className="text-[var(--accent-muted)] font-normal">(Optional)</span>
           </label>
           <input
             id="phone"
@@ -169,7 +169,7 @@ export function ContactForm({
             placeholder="(555) 000-0000"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
+            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
           />
         </div>
 
@@ -186,7 +186,7 @@ export function ContactForm({
             placeholder="e.g., New York, NY"
             value={formData.location}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
+            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
           />
         </div>
       </div>
@@ -202,7 +202,7 @@ export function ContactForm({
             name="seekingTherapyFor"
             value={formData.seekingTherapyFor}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
+            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
           >
             <option value="Individual Therapy">Individual Therapy (Adolescent or Adult)</option>
             <option value="Parent Therapy">Parent Therapy</option>
@@ -221,7 +221,7 @@ export function ContactForm({
             name="preferredContact"
             value={formData.preferredContact}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
+            className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
           >
             <option value="Email">Email</option>
             <option value="Phone">Phone</option>
@@ -243,7 +243,7 @@ export function ContactForm({
           placeholder="Briefly describe what brings you to seek therapy at this time..."
           value={formData.message}
           onChange={handleChange}
-          className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
+          className="w-full px-4 py-3 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm text-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
         />
       </div>
 
@@ -252,7 +252,7 @@ export function ContactForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#FFFFFF] bg-[#4F6752] hover:bg-[#3E5341] rounded-sm transition-colors shadow-xs disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
+          className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#FFFFFF] bg-[var(--accent-primary)] hover:bg-[var(--accent-dark)] rounded-sm transition-colors shadow-xs disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
         >
           {isSubmitting ? "Opening Email..." : "Schedule a Consultation"}
           <Send className="ml-2 w-4 h-4" />
@@ -265,7 +265,7 @@ export function ContactForm({
 
       {/* Security Note */}
       <div className="pt-4 border-t border-[#E2E6E2] flex items-start gap-2.5 text-xs text-[#4A544C]">
-        <Shield className="w-4 h-4 text-[#4F6752] shrink-0 mt-0.5" />
+        <Shield className="w-4 h-4 text-[var(--accent-primary)] shrink-0 mt-0.5" />
         <p className="font-light">
           <strong>Privacy Note:</strong> Standard email is not fully encrypted. Please do not send detailed sensitive medical histories.
         </p>

@@ -18,7 +18,7 @@ export default function DisclaimerPage() {
         <h1 className="font-serif text-3xl sm:text-4xl text-[#1C241E]">
           Terms & Professional Disclaimers
         </h1>
-        <p className="text-xs uppercase tracking-wider text-[#4F6752] font-semibold">
+        <p className="text-xs uppercase tracking-wider text-[var(--accent-primary)] font-semibold">
           {content.practiceName}
         </p>
       </div>

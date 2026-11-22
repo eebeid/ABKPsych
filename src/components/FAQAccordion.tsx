@@ -48,8 +48,8 @@ export function FAQAccordion({
               onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-sm transition-colors ${
                 selectedCategory === cat
-                  ? "bg-[#4F6752] text-[#FFFFFF]"
-                  : "bg-[#FFFFFF] text-[#1C241E] border border-[#E2E6E2] hover:bg-[#EFF3EF]"
+                  ? "bg-[var(--accent-primary)] text-[#FFFFFF]"
+                  : "bg-[#FFFFFF] text-[#1C241E] border border-[#E2E6E2] hover:bg-[var(--accent-wash)]"
               }`}
               role="tab"
               aria-selected={selectedCategory === cat}
@@ -64,14 +64,14 @@ export function FAQAccordion({
           <label htmlFor="faq-search" className="sr-only">
             Search Frequently Asked Questions
           </label>
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B826E]" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--accent-muted)]" />
           <input
             id="faq-search"
             type="text"
             placeholder="Search questions..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm bg-[#FFFFFF] border border-[#E2E6E2] rounded-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:outline-none focus:ring-2 focus:ring-[#4F6752]"
+            className="w-full pl-10 pr-4 py-2 text-sm bg-[#FFFFFF] border border-[#E2E6E2] rounded-sm text-[#1C241E] placeholder-[#8A7F6E]/60 focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]"
           />
         </div>
       </div>
@@ -98,12 +98,12 @@ export function FAQAccordion({
                   onClick={() => toggleAccordion(faq.id)}
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${faq.id}`}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-[#EFF3EF]/50 transition-colors"
+                  className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none hover:bg-[var(--accent-wash)]/50 transition-colors"
                 >
                   <span className="font-serif text-lg text-[#1C241E] pr-4 font-medium">
                     {faq.question}
                   </span>
-                  <span className="shrink-0 p-1.5 rounded-full bg-[#EFF3EF] text-[#4F6752]">
+                  <span className="shrink-0 p-1.5 rounded-full bg-[var(--accent-wash)] text-[var(--accent-primary)]">
                     <ChevronDown
                       className={`w-5 h-5 transition-transform duration-300 ${
                         isOpen ? "rotate-180" : ""
@@ -122,7 +122,7 @@ export function FAQAccordion({
                     <div className="whitespace-pre-line">
                       <FormattedText content={faq.answer} />
                     </div>
-                    <div className="mt-4 pt-3 flex items-center justify-between text-xs text-[#6B826E]">
+                    <div className="mt-4 pt-3 flex items-center justify-between text-xs text-[var(--accent-muted)]">
                       <span>Category: {faq.category}</span>
                       <span>ABK Psychological Services</span>
                     </div>

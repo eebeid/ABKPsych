@@ -24,7 +24,7 @@ const ALLOWED_SPAN_CLASSES = new Set([
   "text-lg",
   "text-sm",
   "text-xs",
-  "text-[#4F6752]",
+  "text-[var(--accent-primary)]",
   "text-[#1C241E]",
   "uppercase",
   "tracking-wider",
@@ -76,7 +76,7 @@ function sanitizeSafeHtml(html: string): string {
       if (!/^(https?:\/\/|\/|mailto:|tel:)/i.test(href)) {
         href = "#";
       }
-      return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="underline hover:text-[#4F6752] transition-colors">`;
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="underline hover:text-[var(--accent-primary)] transition-colors">`;
     }
 
     if (cleanTag === "ul") {
@@ -96,7 +96,7 @@ function sanitizeSafeHtml(html: string): string {
     }
 
     if (cleanTag === "blockquote") {
-      return `<blockquote class="border-l-2 border-[#4F6752] pl-4 italic my-2 text-[#4A544C]">`;
+      return `<blockquote class="border-l-2 border-[var(--accent-primary)] pl-4 italic my-2 text-[#4A544C]">`;
     }
 
     if (cleanTag === "span") {

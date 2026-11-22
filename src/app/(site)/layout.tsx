@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { practiceConfig } from "@/config/practiceConfig";
 import { getContent } from "@/lib/contentStore";
+import { getPalette } from "@/lib/palettes";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -54,6 +55,14 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   const content = getContent();
+  const palette = getPalette(content.themePalette);
+  const paletteVars = {
+    "--accent-primary": palette.primary,
+    "--accent-dark": palette.dark,
+    "--accent-muted": palette.muted,
+    "--accent-wash": palette.wash,
+    "--accent-border": palette.border,
+  } as React.CSSProperties;
 
   // JSON-LD structured data
   const jsonLd = {
@@ -82,7 +91,7 @@ export default function SiteLayout({
   };
 
   return (
-    <>
+    <div style={paletteVars} className="min-h-screen flex flex-col">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -100,6 +109,6 @@ export default function SiteLayout({
         licensure={content.licensure}
         email={content.email}
       />
-    </>
+    </div>
   );
 }

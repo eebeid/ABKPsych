@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { ContactForm } from "@/components/ContactForm";
+import { FormattedText } from "@/components/FormattedText";
 import { getContent } from "@/lib/contentStore";
 import { Info, AlertTriangle } from "lucide-react";
 
@@ -19,7 +20,7 @@ export default function ContactPage() {
       {/* Page Title Header */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
         <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#1C241E]">
-          Inquiries
+          <FormattedText content={content.contactTitle} />
         </h1>
 
         <p className="text-base text-[#4A544C] max-w-2xl mx-auto font-light leading-relaxed">
@@ -45,24 +46,24 @@ export default function ContactPage() {
 
               <div className="space-y-3 text-xs text-[#4A544C] font-light">
                 <div>
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[#4F6752]">
+                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Psychologist
                   </strong>
                   {content.doctorTitle} ({content.credentials})
                 </div>
 
                 <div>
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[#4F6752]">
+                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Direct Email
                   </strong>
-                  <a href={`mailto:${content.email}`} className="text-[#4F6752] hover:underline font-medium">
+                  <a href={`mailto:${content.email}`} className="text-[var(--accent-primary)] hover:underline font-medium">
                     {content.email}
                   </a>
                 </div>
 
                 {content.phone && (
                   <div>
-                    <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[#4F6752]">
+                    <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                       Phone
                     </strong>
                     {content.phone}
@@ -70,7 +71,7 @@ export default function ContactPage() {
                 )}
 
                 <div>
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[#4F6752]">
+                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Practice Model
                   </strong>
                   {content.sessionLength ? `Sessions: ${content.sessionLength}. ` : ""}
@@ -78,7 +79,7 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[#4F6752]">
+                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Insurance & Fees
                   </strong>
                   {content.fees || "Private, direct-service practice."} {content.insurancePolicy || "Services provided privately and directly."}
@@ -100,8 +101,8 @@ export default function ContactPage() {
             </div>
 
             {/* Emergency Disclaimer */}
-            <div className="bg-[#EFF3EF] border border-[#C8D4C9] p-5 rounded-sm space-y-2">
-              <div className="flex items-center gap-2 text-[#4F6752]">
+            <div className="bg-[var(--accent-wash)] border border-[var(--accent-border)] p-5 rounded-sm space-y-2">
+              <div className="flex items-center gap-2 text-[var(--accent-primary)]">
                 <AlertTriangle className="w-4 h-4 shrink-0" />
                 <h3 className="text-xs uppercase tracking-wider font-semibold">
                   Emergency Notice

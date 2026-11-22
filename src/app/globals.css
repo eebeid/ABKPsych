@@ -1,12 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  /* Minimalist Sage Green Palette Tokens */
-  --color-sage-dark: #3E5341;        /* Deep Forest Sage for dark sections & CTAs */
-  --color-sage-primary: #4F6752;     /* Core Warm Sage Green */
-  --color-sage-muted: #6B826E;       /* Muted Sage Accent */
-  --color-sage-wash: #EFF3EF;        /* Soft Sage Light Wash for cards/sections */
-  --color-sage-border: #C8D4C9;      /* Light Sage Border */
+  /* Active Theme Accent Tokens (default: Warm Taupe) */
+  --accent-dark: #6E6455;
+  --accent-primary: #8A7F6E;
+  --accent-muted: #A49989;
+  --accent-wash: #F3F1EC;
+  --accent-border: #DCD6CC;
+
+  /* Legacy aliases pointing to active accent tokens */
+  --color-sage-dark: var(--accent-dark);
+  --color-sage-primary: var(--accent-primary);
+  --color-sage-muted: var(--accent-muted);
+  --color-sage-wash: var(--accent-wash);
+  --color-sage-border: var(--accent-border);
 
   --color-linen-bg: #F9F8F5;         /* Minimal Linen Canvas Background */
   --color-paper-white: #FFFFFF;      /* Clean White Surface Fill */

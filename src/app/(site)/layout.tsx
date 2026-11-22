@@ -1,7 +1,10 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { practiceConfig } from "@/config/practiceConfig";
+import { getContent } from "@/lib/contentStore";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
@@ -50,21 +53,23 @@ export default function SiteLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const content = getContent();
+
   // JSON-LD structured data
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Physician",
-    name: practiceConfig.psychologistName,
+    name: content.psychologistName,
     medicalSpecialty: "Psychiatric",
-    description: practiceConfig.meta.description,
-    alumniOf: practiceConfig.university,
-    hasCredential: practiceConfig.degree,
-    telephone: practiceConfig.phone,
-    email: practiceConfig.email,
+    description: content.metaDescription || practiceConfig.meta.description,
+    alumniOf: content.university,
+    hasCredential: content.degree,
+    telephone: content.phone,
+    email: content.email,
     url: practiceConfig.meta.siteUrl,
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Telehealth Practice",
+      addressLocality: content.officeAddress || "Telehealth Practice",
       addressCountry: "US",
     },
     knowsAbout: [
@@ -82,9 +87,19 @@ export default function SiteLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header />
+      <Header
+        practiceName={content.practiceName}
+        psychologistName={content.psychologistName}
+      />
       <main className="flex-grow">{children}</main>
-      <Footer />
+      <Footer
+        practiceName={content.practiceName}
+        doctorTitle={content.doctorTitle}
+        degree={content.degree}
+        university={content.university}
+        licensure={content.licensure}
+        email={content.email}
+      />
     </>
   );
 }

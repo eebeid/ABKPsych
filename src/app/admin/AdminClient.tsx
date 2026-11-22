@@ -22,8 +22,21 @@ import {
   ExternalLink,
   ChevronRight,
   Globe,
+  Bold,
+  Italic,
+  Underline,
+  Strikethrough,
+  Link2,
+  Highlighter,
+  List,
+  ListOrdered,
+  Heading3,
+  Quote,
+  Type,
+  Code,
 } from "lucide-react";
 import type { EditableContent } from "@/lib/contentStore";
+import { FormattedText } from "@/components/FormattedText";
 
 /* ─── Shared field components ────────────────────────── */
 function Field({
@@ -33,6 +46,7 @@ function Field({
   multiline = false,
   rows = 3,
   hint,
+  wysiwyg = false,
 }: {
   label: string;
   value: string;
@@ -40,27 +54,253 @@ function Field({
   multiline?: boolean;
   rows?: number;
   hint?: string;
+  wysiwyg?: boolean;
 }) {
+  const [showPreview, setShowPreview] = useState(false);
+  const textareaId = `field-${label.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
+
+  const applyTag = (openTag: string, closeTag: string) => {
+    const el = document.getElementById(textareaId) as HTMLTextAreaElement | HTMLInputElement | null;
+    if (!el) {
+      onChange(`${value}${openTag}${closeTag}`);
+      return;
+    }
+    const start = el.selectionStart ?? value.length;
+    const end = el.selectionEnd ?? value.length;
+    const selected = value.substring(start, end);
+    const replacement = `${openTag}${selected || "text"}${closeTag}`;
+    const nextVal = value.substring(0, start) + replacement + value.substring(end);
+    onChange(nextVal);
+    setTimeout(() => {
+      el.focus();
+      const newCursorStart = start + openTag.length;
+      const newCursorEnd = newCursorStart + (selected ? selected.length : 4);
+      el.setSelectionRange(newCursorStart, newCursorEnd);
+    }, 0);
+  };
+
+  const addLink = () => {
+    const url = window.prompt("Enter destination URL (e.g. /contact or https://...):", "https://");
+    if (!url) return;
+    const el = document.getElementById(textareaId) as HTMLTextAreaElement | HTMLInputElement | null;
+    const start = el?.selectionStart ?? value.length;
+    const end = el?.selectionEnd ?? value.length;
+    const selected = value.substring(start, end) || "link text";
+    const tag = `<a href="${url}">${selected}</a>`;
+    const nextVal = value.substring(0, start) + tag + value.substring(end);
+    onChange(nextVal);
+  };
+
+  const applyList = (ordered: boolean) => {
+    const tag = ordered ? "ol" : "ul";
+    const el = document.getElementById(textareaId) as HTMLTextAreaElement | HTMLInputElement | null;
+    const start = el?.selectionStart ?? value.length;
+    const end = el?.selectionEnd ?? value.length;
+    const selected = value.substring(start, end).trim();
+    const lines = selected
+      ? selected.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)
+      : ["List item 1", "List item 2"];
+    const items = lines.map((line) => `  <li>${line}</li>`).join("\n");
+    const replacement = `<${tag}>\n${items}\n</${tag}>`;
+    const nextVal = value.substring(0, start) + replacement + value.substring(end);
+    onChange(nextVal);
+    if (el) {
+      setTimeout(() => {
+        el.focus();
+        el.setSelectionRange(start, start + replacement.length);
+      }, 0);
+    }
+  };
+
   const cls =
     "w-full border border-[#D5DAD5] rounded-sm px-3 py-2.5 text-sm text-[#1C241E] focus:outline-none focus:ring-2 focus:ring-[#4F6752] focus:border-[#4F6752] bg-white transition-shadow placeholder:text-[#ADB8AE]";
+
+  const isRich = multiline || wysiwyg;
+
   return (
     <div className="space-y-1.5">
-      <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4F6752]">
-        {label}
-      </label>
-      {multiline ? (
+      <div className="flex items-center justify-between">
+        <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4F6752]">
+          {label}
+        </label>
+        {isRich && (
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => setShowPreview(!showPreview)}
+              className={`text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded transition-colors flex items-center gap-1 ${
+                showPreview
+                  ? "bg-[#4F6752] text-white"
+                  : "bg-[#EFF3EF] text-[#4F6752] hover:bg-[#E2EAE3]"
+              }`}
+            >
+              {showPreview ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+              <span>{showPreview ? "Edit Mode" : "Preview"}</span>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {isRich && !showPreview && (
+        <div className="flex flex-wrap items-center gap-1 bg-[#F9F8F5] border border-[#D5DAD5] border-b-0 px-2 py-1.5 rounded-t-sm text-[#4A544C]">
+          <span className="text-[10px] uppercase font-bold text-[#6B826E] mr-1 tracking-wider hidden sm:inline">
+            Format:
+          </span>
+          <button
+            type="button"
+            title="Bold"
+            onClick={() => applyTag("<strong>", "</strong>")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <Bold className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            title="Italic"
+            onClick={() => applyTag("<em>", "</em>")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <Italic className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            title="Underline"
+            onClick={() => applyTag("<u>", "</u>")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <Underline className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            title="Strikethrough"
+            onClick={() => applyTag("<s>", "</s>")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <Strikethrough className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            title="Highlight"
+            onClick={() => applyTag("<mark>", "</mark>")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <Highlighter className="w-3.5 h-3.5" />
+          </button>
+
+          <span className="w-px h-4 bg-[#D5DAD5] mx-0.5" />
+
+          <button
+            type="button"
+            title="Serif Font"
+            onClick={() => applyTag('<span class="font-serif">', "</span>")}
+            className="px-1.5 py-0.5 text-[11px] font-serif hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors flex items-center gap-0.5"
+          >
+            <Type className="w-3 h-3" />
+            <span>Serif</span>
+          </button>
+          <button
+            type="button"
+            title="Larger Text"
+            onClick={() => applyTag('<span class="text-lg">', "</span>")}
+            className="px-1.5 py-0.5 text-[10px] font-semibold hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            A+
+          </button>
+          <button
+            type="button"
+            title="Smaller Text"
+            onClick={() => applyTag('<span class="text-sm">', "</span>")}
+            className="px-1.5 py-0.5 text-[10px] font-semibold hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            A-
+          </button>
+          <button
+            type="button"
+            title="Sage Accent Color"
+            onClick={() => applyTag('<span class="text-[#4F6752]">', "</span>")}
+            className="px-1.5 py-0.5 text-[10px] font-semibold hover:bg-[#E2E6E2] rounded text-[#4F6752] transition-colors"
+          >
+            Sage
+          </button>
+
+          <span className="w-px h-4 bg-[#D5DAD5] mx-0.5" />
+
+          <button
+            type="button"
+            title="Bullet List"
+            onClick={() => applyList(false)}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <List className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            title="Numbered List"
+            onClick={() => applyList(true)}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <ListOrdered className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            title="Subheading"
+            onClick={() => applyTag("<h3>", "</h3>")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <Heading3 className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            title="Blockquote"
+            onClick={() => applyTag("<blockquote>", "</blockquote>")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <Quote className="w-3.5 h-3.5" />
+          </button>
+
+          <span className="w-px h-4 bg-[#D5DAD5] mx-0.5" />
+
+          <button
+            type="button"
+            title="Insert Link"
+            onClick={addLink}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <Link2 className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            title="Line Break"
+            onClick={() => applyTag("<br />", "")}
+            className="px-1.5 py-0.5 text-[10px] font-mono hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            &lt;br&gt;
+          </button>
+        </div>
+      )}
+
+      {showPreview ? (
+        <div className="w-full min-h-[78px] border border-[#4F6752]/40 bg-[#FAF9F6] rounded-sm p-3 text-sm text-[#1C241E] leading-relaxed shadow-inner">
+          <p className="text-[10px] uppercase font-bold text-[#6B826E] mb-1 tracking-wider">Live Preview</p>
+          <div className="text-sm font-light leading-relaxed">
+            <FormattedText content={value || "<em>(empty)</em>"} />
+          </div>
+        </div>
+      ) : multiline ? (
         <textarea
+          id={textareaId}
           rows={rows}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={cls}
+          className={`${cls} ${isRich ? "rounded-t-none" : ""}`}
         />
       ) : (
         <input
+          id={textareaId}
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={cls}
+          className={`${cls} ${isRich ? "rounded-t-none" : ""}`}
         />
       )}
       {hint && <p className="text-[11px] text-[#8A9E8C] italic">{hint}</p>}
@@ -270,12 +510,6 @@ function HomeEditor({
       <div className="card-panel space-y-5">
         <SectionDivider label="Hero Section" />
         <Field
-          label="Practice Badge Text"
-          value={content.practiceName}
-          onChange={(v) => set("practiceName", v)}
-          hint="Shown in the small badge above the headline"
-        />
-        <Field
           label="Hero Headline"
           value={content.heroHeadline}
           onChange={(v) => set("heroHeadline", v)}
@@ -296,6 +530,34 @@ function HomeEditor({
           multiline
           rows={4}
           hint="The body paragraph beneath the tagline"
+        />
+      </div>
+      <div className="card-panel space-y-5">
+        <SectionDivider label="Practice Highlight Callout" />
+        <Field
+          label="Highlight Header / Eyebrow"
+          value={content.practiceHighlightHeadline}
+          onChange={(v) => set("practiceHighlightHeadline", v)}
+          hint="e.g. An intentionally small practice."
+        />
+        <Field
+          label="Highlight Body"
+          value={content.practiceHighlightBody}
+          onChange={(v) => set("practiceHighlightBody", v)}
+          multiline
+          rows={3}
+          hint="The statement explaining the intentionally small, direct-service practice structure."
+        />
+      </div>
+      <div className="card-panel space-y-5">
+        <SectionDivider label="Who I Work With Intro" />
+        <Field
+          label="Introductory Paragraph"
+          value={content.whoIWorkWithIntro}
+          onChange={(v) => set("whoIWorkWithIntro", v)}
+          multiline
+          rows={4}
+          hint="Intro paragraph shown above audience cards on both Home and the dedicated Who I Work With page."
         />
       </div>
       <div className="card-panel space-y-5">
@@ -323,7 +585,7 @@ function HomeEditor({
         />
       </div>
       <div className="card-panel space-y-5">
-        <SectionDivider label="CTA Section" />
+        <SectionDivider label="Schedule an Initial Consultation (Bottom CTA)" />
         <Field
           label="CTA Headline"
           value={content.ctaHeadline}
@@ -335,6 +597,7 @@ function HomeEditor({
           onChange={(v) => set("ctaBody", v)}
           multiline
           rows={3}
+          hint="The descriptive text beneath 'Schedule an Initial Consultation'"
         />
       </div>
     </div>
@@ -356,7 +619,15 @@ function AboutEditor({
         href="/about"
       />
       <div className="card-panel space-y-5">
-        <SectionDivider label="Biography" />
+        <SectionDivider label="Page Header & Biography" />
+        <Field
+          label="Page Subtitle"
+          value={content.aboutSubtitle}
+          onChange={(v) => set("aboutSubtitle", v)}
+          multiline
+          rows={2}
+          hint="Displayed directly beneath the About page heading"
+        />
         <Field
           label="Opening Paragraph"
           value={content.aboutOpening}
@@ -445,6 +716,17 @@ function WhoEditor({
         description="Audience cards shown on the home page and the dedicated 'Who I Work With' page."
         href="/who-i-work-with"
       />
+      <div className="card-panel space-y-5">
+        <SectionDivider label="Page Introduction" />
+        <Field
+          label="Introductory Paragraph"
+          value={content.whoIWorkWithIntro}
+          onChange={(v) => set("whoIWorkWithIntro", v)}
+          multiline
+          rows={4}
+          hint="Introductory text explaining the disorientation and emotional complexity of later-in-life neurodevelopmental diagnosis."
+        />
+      </div>
       {content.audiences.map((aud, ai) => (
         <div key={aud.id} className="card-panel space-y-5">
           <SectionDivider label={aud.title} />
@@ -864,12 +1146,26 @@ function Editor({ onLogout }: { onLogout: () => void }) {
   const [activePage, setActivePage] = useState<PageId>("home");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const [loadError, setLoadError] = useState<string | null>(null);
+
   const fetchContent = useCallback(async () => {
     setLoading(true);
-    const res = await fetch("/api/admin/content");
-    if (res.ok) setContent(await res.json());
-    setLoading(false);
-  }, []);
+    setLoadError(null);
+    try {
+      const res = await fetch("/api/admin/content");
+      if (res.ok) {
+        setContent(await res.json());
+      } else if (res.status === 401) {
+        onLogout();
+      } else {
+        setLoadError(`Failed to load content (${res.status} ${res.statusText})`);
+      }
+    } catch (err: unknown) {
+      setLoadError(err instanceof Error ? err.message : "Network error");
+    } finally {
+      setLoading(false);
+    }
+  }, [onLogout]);
 
   useEffect(() => {
     fetchContent();
@@ -908,7 +1204,33 @@ function Editor({ onLogout }: { onLogout: () => void }) {
     );
   }
 
-  if (!content) return null;
+  if (!content) {
+    return (
+      <div className="min-h-screen bg-[#F0F2F0] flex items-center justify-center p-4">
+        <div className="bg-white border border-[#E2E6E2] p-8 rounded-sm shadow-md max-w-md w-full text-center space-y-4">
+          <AlertCircle className="w-10 h-10 text-red-500 mx-auto" />
+          <h2 className="font-serif text-lg text-[#1C241E]">Unable to Load Editor</h2>
+          <p className="text-xs text-[#6B826E] leading-relaxed">
+            {loadError || "Could not retrieve website content from the server."}
+          </p>
+          <div className="flex items-center justify-center gap-3 pt-2">
+            <button
+              onClick={() => fetchContent()}
+              className="px-4 py-2 bg-[#4F6752] hover:bg-[#3E5341] text-white text-xs font-semibold rounded-sm transition-colors"
+            >
+              Try Again
+            </button>
+            <button
+              onClick={onLogout}
+              className="px-4 py-2 border border-[#D5DAD5] text-[#1C241E] hover:bg-[#F9F8F5] text-xs font-semibold rounded-sm transition-colors"
+            >
+              Back to Login
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const activeNav = NAV_ITEMS.find((n) => n.id === activePage)!;
 

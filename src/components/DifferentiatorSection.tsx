@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { practiceConfig } from "@/config/practiceConfig";
 
 export function DifferentiatorSection() {
@@ -26,11 +26,6 @@ export function DifferentiatorSection() {
 
           {/* Editorial Copy */}
           <div className="lg:col-span-7 space-y-5">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-[#EDF2F7] text-[#3F5166] text-xs font-semibold uppercase tracking-wider rounded-full border border-[#8A9DB5]/40">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Clinical Distinction</span>
-            </div>
-
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#181A1D] leading-tight">
               A perspective shaped by 15+ years in early childhood autism assessment.
             </h2>

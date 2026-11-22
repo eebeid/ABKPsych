@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, UserCheck, HeartHandshake, Users } from "lucide-react";
 import { AudienceInfo } from "@/config/practiceConfig";
+import { FormattedText } from "@/components/FormattedText";
 
 interface AudienceCardProps {
   audience: AudienceInfo;
@@ -35,7 +36,7 @@ export function AudienceCard({ audience }: AudienceCardProps) {
           {audience.subtitle}
         </p>
         <p className="text-xs text-[#4A544C] leading-relaxed mb-6 font-light">
-          {audience.summary}
+          <FormattedText content={audience.summary} />
         </p>
       </div>
 

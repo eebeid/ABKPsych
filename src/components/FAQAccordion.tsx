@@ -2,16 +2,28 @@
 
 import { useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
-import { faqData, FAQItem } from "@/config/practiceConfig";
+import { faqData } from "@/config/practiceConfig";
+import { FormattedText } from "@/components/FormattedText";
 
-export function FAQAccordion() {
-  const [openId, setOpenId] = useState<string | null>("practice-model");
+export function FAQAccordion({
+  items,
+}: {
+  items?: {
+    id: string;
+    category: string;
+    question: string;
+    answer: string;
+  }[];
+} = {}) {
+  const data = items && items.length > 0 ? items : faqData;
+  const [openId, setOpenId] = useState<string | null>(data[0]?.id || null);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const categories = ["All", "Services & Fit", "Fees & Practice", "General"];
+  const rawCats = Array.from(new Set(data.map((i) => i.category)));
+  const categories = ["All", ...rawCats];
 
-  const filteredFaqs = faqData.filter((item) => {
+  const filteredFaqs = data.filter((item) => {
     const matchesCategory =
       selectedCategory === "All" || item.category === selectedCategory;
     const matchesSearch =
@@ -73,7 +85,7 @@ export function FAQAccordion() {
         </div>
       ) : (
         <div className="space-y-4">
-          {filteredFaqs.map((faq: FAQItem) => {
+          {filteredFaqs.map((faq) => {
             const isOpen = openId === faq.id;
             return (
               <div
@@ -107,7 +119,9 @@ export function FAQAccordion() {
                     aria-labelledby={faq.id}
                     className="px-6 pb-6 pt-2 text-sm text-[#4A544C] leading-relaxed font-light border-t border-[#E2E6E2] animate-fade-in"
                   >
-                    <p className="whitespace-pre-line">{faq.answer}</p>
+                    <div className="whitespace-pre-line">
+                      <FormattedText content={faq.answer} />
+                    </div>
                     <div className="mt-4 pt-3 flex items-center justify-between text-xs text-[#6B826E]">
                       <span>Category: {faq.category}</span>
                       <span>ABK Psychological Services</span>

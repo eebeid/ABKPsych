@@ -4,7 +4,11 @@ import { useState } from "react";
 import { Send, CheckCircle2, Shield, Mail } from "lucide-react";
 import { practiceConfig } from "@/config/practiceConfig";
 
-export function ContactForm() {
+export function ContactForm({
+  email = practiceConfig.email,
+}: {
+  email?: string;
+} = {}) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -37,7 +41,7 @@ export function ContactForm() {
       `Preferred Contact Method: ${formData.preferredContact}\n\n` +
       `Brief Message:\n${formData.message}\n`
     );
-    return `mailto:${practiceConfig.email}?subject=${subject}&body=${body}`;
+    return `mailto:${email}?subject=${subject}&body=${body}`;
   };
 
   const handleSubmit = (e: React.FormEvent) => {

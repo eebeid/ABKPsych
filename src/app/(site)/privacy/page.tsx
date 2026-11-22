@@ -1,4 +1,7 @@
 import { Metadata } from "next";
+import { getContent } from "@/lib/contentStore";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | ABK Psychological Services, PLLC",
@@ -6,6 +9,8 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
+  const content = getContent();
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-8 text-sm text-[#4A544C] leading-relaxed font-light">
       <div className="border-b border-[#E2E6E2] pb-6 space-y-2">
@@ -13,21 +18,21 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="text-xs uppercase tracking-wider text-[#4F6752] font-semibold">
-          ABK Psychological Services, PLLC
+          {content.practiceName}
         </p>
       </div>
 
       <section className="space-y-3">
         <h2 className="font-serif text-xl text-[#1C241E]">Information Collection & Use</h2>
         <p>
-          We respect your privacy. ABK Psychological Services, PLLC collects minimal personal data—specifically information you voluntarily submit through our preliminary contact form (such as your name, email address, phone number, location, and inquiry focus). We do not sell or share visitor information.
+          We respect your privacy. {content.practiceName} collects minimal personal data—specifically information you voluntarily submit through our preliminary contact form (such as your name, email address, phone number, location, and inquiry focus). We do not sell or share visitor information.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="font-serif text-xl text-[#1C241E]">Email Communications</h2>
         <p>
-          Submitting an inquiry via our contact form opens an email to <strong>dr.antonia@abkpsych.com</strong>. Standard internet email is not fully encrypted. Please do not include highly sensitive medical details in preliminary messages.
+          Submitting an inquiry via our contact form opens an email to <strong>{content.email}</strong>. Standard internet email is not fully encrypted. Please do not include highly sensitive medical details in preliminary messages.
         </p>
       </section>
 

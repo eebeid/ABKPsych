@@ -2,7 +2,21 @@ import Link from "next/link";
 import { practiceConfig } from "@/config/practiceConfig";
 import { ShieldCheck } from "lucide-react";
 
-export function Footer() {
+export function Footer({
+  practiceName = practiceConfig.practiceName,
+  doctorTitle = practiceConfig.doctorTitle,
+  degree = practiceConfig.degree,
+  university = practiceConfig.university,
+  licensure = practiceConfig.licensure,
+  email = practiceConfig.email,
+}: {
+  practiceName?: string;
+  doctorTitle?: string;
+  degree?: string;
+  university?: string;
+  licensure?: string;
+  email?: string;
+} = {}) {
   return (
     <footer className="bg-[#222923] text-[#F9F8F5] border-t border-[#343E36] pt-14 pb-10 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -10,10 +24,10 @@ export function Footer() {
           {/* Practice Column */}
           <div className="space-y-3">
             <h2 className="font-serif text-xl font-medium text-[#F9F8F5]">
-              {practiceConfig.practiceName}
+              {practiceName}
             </h2>
             <p className="text-xs uppercase tracking-widest text-[#98A89A] font-semibold">
-              {practiceConfig.doctorTitle}
+              {doctorTitle}
             </p>
             <p className="text-xs text-[#CBD4CB] leading-relaxed font-light">
               An intentionally small, direct-service psychotherapy practice for adolescents, adults, parents, and partners.
@@ -21,9 +35,9 @@ export function Footer() {
             <div className="pt-1 text-xs text-[#98A89A] space-y-1">
               <p className="flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 shrink-0 text-[#98A89A]" />
-                Psy.D., The George Washington University
+                {degree}{university ? `, ${university}` : ""}
               </p>
-              <p>Licensed Psychologist, New York State</p>
+              <p>{licensure}</p>
             </div>
           </div>
 
@@ -88,7 +102,7 @@ export function Footer() {
               <li>Out-of-Network Superbills Provided</li>
             </ul>
             <div className="mt-4 pt-3 border-t border-[#343E36] text-xs text-[#CBD4CB]">
-              <p>Email: <a href={`mailto:${practiceConfig.email}`} className="text-[#A3B8A5] hover:underline font-medium">{practiceConfig.email}</a></p>
+              <p>Email: <a href={`mailto:${email}`} className="text-[#A3B8A5] hover:underline font-medium">{email}</a></p>
             </div>
           </div>
 
@@ -106,7 +120,7 @@ export function Footer() {
         {/* Bottom Legal & Rights */}
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-[#98A89A] gap-3">
           <p>
-            © {new Date().getFullYear()} {practiceConfig.practiceName}. All rights reserved. {practiceConfig.doctorTitle}.
+            © {new Date().getFullYear()} {practiceName}. All rights reserved. {doctorTitle}.
           </p>
           <div className="flex items-center space-x-4">
             <Link href="/privacy" className="hover:text-[#F9F8F5] transition-colors">

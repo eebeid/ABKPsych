@@ -6,7 +6,13 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { practiceConfig } from "@/config/practiceConfig";
 
-export function Header() {
+export function Header({
+  practiceName = practiceConfig.practiceName,
+  psychologistName = practiceConfig.psychologistName,
+}: {
+  practiceName?: string;
+  psychologistName?: string;
+} = {}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -47,10 +53,10 @@ export function Header() {
           aria-label="ABK Psychological Services, PLLC Homepage"
         >
           <span className="font-serif text-lg sm:text-xl font-medium tracking-tight text-[#1C241E] group-hover:text-[#4F6752] transition-colors">
-            {practiceConfig.practiceName}
+            {practiceName}
           </span>
           <span className="text-[11px] uppercase tracking-widest text-[#6B826E] font-semibold">
-            {practiceConfig.psychologistName}
+            {psychologistName}
           </span>
         </Link>
 

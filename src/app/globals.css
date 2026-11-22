@@ -68,6 +68,16 @@ h1, h2, h3, h4, .font-serif-editorial {
   letter-spacing: -0.015em;
 }
 
+@layer base {
+  main p {
+    text-align: justify;
+  }
+
+  main .text-center p {
+    text-align: center;
+  }
+}
+
 /* Focus indicator for high accessibility */
 *:focus-visible {
   outline: 2px solid var(--color-sage-primary);

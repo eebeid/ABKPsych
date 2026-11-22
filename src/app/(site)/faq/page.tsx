@@ -2,7 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { ArrowRight } from "lucide-react";
-import { Badge } from "@/components/Badge";
+import { getContent } from "@/lib/contentStore";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Frequently Asked Questions | ABK Psychological Services, PLLC",
@@ -11,22 +13,23 @@ export const metadata: Metadata = {
 };
 
 export default function FAQPage() {
+  const content = getContent();
+
   return (
     <div className="space-y-14 py-14">
       {/* Header Section */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <Badge variant="sage">Practice Details & FAQ</Badge>
         <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#1C241E]">
           Frequently Asked Questions
         </h1>
         <p className="text-base text-[#4A544C] max-w-2xl mx-auto font-light leading-relaxed">
-          Information about practice fit, individual partner boundaries, fees, and starting therapy with Dr. Krimitsos.
+          Information about practice fit, individual partner boundaries, fees, and starting therapy with {content.doctorTitle}.
         </p>
       </section>
 
       {/* Accordion Container */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <FAQAccordion />
+        <FAQAccordion items={content.faq} />
       </section>
 
       {/* Bottom Contact CTA */}

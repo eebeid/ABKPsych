@@ -1,4 +1,8 @@
 import { Metadata } from "next";
+import { getContent } from "@/lib/contentStore";
+import { FormattedText } from "@/components/FormattedText";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Terms & Clinical Disclaimer | ABK Psychological Services, PLLC",
@@ -6,6 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default function DisclaimerPage() {
+  const content = getContent();
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-8 text-sm text-[#4A544C] leading-relaxed font-light">
       <div className="border-b border-[#E2E6E2] pb-6 space-y-2">
@@ -13,7 +19,7 @@ export default function DisclaimerPage() {
           Terms & Professional Disclaimers
         </h1>
         <p className="text-xs uppercase tracking-wider text-[#4F6752] font-semibold">
-          ABK Psychological Services, PLLC
+          {content.practiceName}
         </p>
       </div>
 
@@ -27,15 +33,21 @@ export default function DisclaimerPage() {
       <section className="space-y-3">
         <h2 className="font-serif text-xl text-[#1C241E]">Existing Professional Relationships</h2>
         <p>
-          To maintain clear professional boundaries and avoid conflicts of interest, Dr. Krimitsos does not provide private services to individuals or family members with whom she has an existing professional relationship through another organization.
+          <FormattedText content={content.boundaryDisclaimer} />
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="font-serif text-xl text-[#1C241E]">No Emergency Services</h2>
-        <p>
-          This website and contact form are not monitored for emergency situations. If you are experiencing a mental health emergency, please call <strong>988</strong> (Crisis Lifeline), call <strong>911</strong>, or visit your nearest emergency room immediately.
-        </p>
+        <div>
+          {content.emergencyDisclaimer ? (
+            <FormattedText as="p" content={content.emergencyDisclaimer} />
+          ) : (
+            <p>
+              This website and contact form are not monitored for emergency situations. If you are experiencing a mental health emergency, please call <strong>988</strong> (Crisis Lifeline), call <strong>911</strong>, or visit your nearest emergency room immediately.
+            </p>
+          )}
+        </div>
       </section>
     </div>
   );

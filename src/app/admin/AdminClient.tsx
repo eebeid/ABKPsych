@@ -37,6 +37,7 @@ import {
 } from "lucide-react";
 import type { EditableContent } from "@/lib/contentStore";
 import { THEME_PALETTES } from "@/lib/palettes";
+import { FONT_OPTIONS } from "@/lib/fonts";
 import { FormattedText } from "@/components/FormattedText";
 
 /* ─── Shared field components ────────────────────────── */
@@ -429,7 +430,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
 type PageId =
   | "home"
   | "about"
-  | "who-i-work-with"
+  | "core-areas"
   | "faq"
   | "contact"
   | "settings"
@@ -457,11 +458,11 @@ const NAV_ITEMS: {
     href: "/about",
   },
   {
-    id: "who-i-work-with",
-    label: "Who I Work With",
+    id: "core-areas",
+    label: "Core Areas",
     sublabel: "Audience cards & descriptions",
     icon: Users,
-    href: "/who-i-work-with",
+    href: "/core-areas",
   },
   {
     id: "faq",
@@ -551,14 +552,14 @@ function HomeEditor({
         />
       </div>
       <div className="card-panel space-y-5">
-        <SectionDivider label="Who I Work With Intro" />
+        <SectionDivider label="Core Areas Intro" />
         <Field
           label="Introductory Paragraph"
           value={content.whoIWorkWithIntro}
           onChange={(v) => set("whoIWorkWithIntro", v)}
           multiline
           rows={4}
-          hint="Intro paragraph shown above audience cards on both Home and the dedicated Who I Work With page."
+          hint="Intro paragraph shown above audience cards on both Home and the dedicated Core Areas page."
         />
       </div>
       <div className="card-panel space-y-5">
@@ -719,9 +720,9 @@ function WhoEditor({
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Who I Work With"
-        description="Audience cards shown on the home page and the dedicated 'Who I Work With' page."
-        href="/who-i-work-with"
+        title="Core Areas"
+        description="Audience cards shown on the home page and the dedicated 'Core Areas' page."
+        href="/core-areas"
       />
       <div className="card-panel space-y-5">
         <SectionDivider label="Page Header & Introduction" />
@@ -1088,6 +1089,99 @@ function SettingsEditor({
           })}
         </div>
       </div>
+      <div className="card-panel space-y-6">
+        <SectionDivider label="Website Typography" />
+        <p className="text-xs text-[#6B826E]">
+          Choose fonts for headings and body copy independently (for example, Montserrat for headings with Lato or DM Sans for body text). Click Save Changes to apply.
+        </p>
+
+        <div className="space-y-3">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-[#4F6752]">
+            Heading Font
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {FONT_OPTIONS.map((font) => {
+              const selected = (content.headingFont || "default") === font.id;
+              return (
+                <button
+                  key={`heading-${font.id}`}
+                  type="button"
+                  onClick={() => set("headingFont", font.id)}
+                  className={`text-left p-3.5 rounded-sm border transition-all ${
+                    selected
+                      ? "border-[#1C241E] ring-2 ring-[#1C241E]/20 bg-[#FAF9F6]"
+                      : "border-[#E2E6E2] hover:border-[#ADB8AE] bg-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span
+                      className="text-base font-medium text-[#1C241E]"
+                      style={{ fontFamily: font.headingFamily }}
+                    >
+                      {font.name}
+                    </span>
+                    {selected && (
+                      <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-[#1C241E] text-white shrink-0">
+                        Active
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[10px] uppercase tracking-wider font-semibold text-[#8A7F6E] mb-1.5">
+                    {font.tagline}
+                  </p>
+                  <p className="text-[11px] text-[#6B826E] leading-relaxed">
+                    {font.description}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="space-y-3 pt-2">
+          <h3 className="text-xs font-bold uppercase tracking-widest text-[#4F6752]">
+            Body Font
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {FONT_OPTIONS.map((font) => {
+              const selected = (content.bodyFont || "default") === font.id;
+              return (
+                <button
+                  key={`body-${font.id}`}
+                  type="button"
+                  onClick={() => set("bodyFont", font.id)}
+                  className={`text-left p-3.5 rounded-sm border transition-all ${
+                    selected
+                      ? "border-[#1C241E] ring-2 ring-[#1C241E]/20 bg-[#FAF9F6]"
+                      : "border-[#E2E6E2] hover:border-[#ADB8AE] bg-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span
+                      className="text-base font-medium text-[#1C241E]"
+                      style={{ fontFamily: font.bodyFamily }}
+                    >
+                      {font.name}
+                    </span>
+                    {selected && (
+                      <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-[#1C241E] text-white shrink-0">
+                        Active
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[10px] uppercase tracking-wider font-semibold text-[#8A7F6E] mb-1.5">
+                    {font.tagline}
+                  </p>
+                  <p className="text-[11px] text-[#6B826E] leading-relaxed">
+                    {font.description}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       <div className="card-panel space-y-5">
         <SectionDivider label="Identity" />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1468,7 +1562,7 @@ function Editor({ onLogout }: { onLogout: () => void }) {
           <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 pb-24">
             {activePage === "home" && <HomeEditor content={content} set={set} />}
             {activePage === "about" && <AboutEditor content={content} set={set} />}
-            {activePage === "who-i-work-with" && <WhoEditor content={content} set={set} />}
+            {activePage === "core-areas" && <WhoEditor content={content} set={set} />}
             {activePage === "faq" && <FAQEditor content={content} set={set} />}
             {activePage === "contact" && <ContactEditor content={content} set={set} />}
             {activePage === "settings" && <SettingsEditor content={content} set={set} />}

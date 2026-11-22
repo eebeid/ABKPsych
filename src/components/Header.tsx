@@ -31,7 +31,7 @@ export function Header({
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Who I Work With", href: "/who-i-work-with" },
+    { name: "Core Areas", href: "/core-areas" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
     { name: "FAQ", href: "/faq" },

@@ -1,16 +1,48 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import {
+  Playfair_Display,
+  Plus_Jakarta_Sans,
+  Lato,
+  Montserrat,
+  DM_Sans,
+  Nunito_Sans,
+} from "next/font/google";
 import "./globals.css";
 
-const serifFont = Playfair_Display({
+const playfairFont = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-serif-family",
+  variable: "--font-playfair",
   display: "swap",
 });
 
-const sansFont = Plus_Jakarta_Sans({
+const jakartaFont = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-sans-family",
+  variable: "--font-jakarta",
+  display: "swap",
+});
+
+const latoFont = Lato({
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  variable: "--font-lato",
+  display: "swap",
+});
+
+const montserratFont = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  display: "swap",
+});
+
+const dmSansFont = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+
+const nunitoFont = Nunito_Sans({
+  subsets: ["latin"],
+  variable: "--font-nunito",
   display: "swap",
 });
 
@@ -28,7 +60,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${serifFont.variable} ${sansFont.variable} h-full antialiased`}
+      className={`${playfairFont.variable} ${jakartaFont.variable} ${latoFont.variable} ${montserratFont.variable} ${dmSansFont.variable} ${nunitoFont.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#F7F3ED] text-[#2C302E] selection:bg-[#EAF0E7] selection:text-[#52634E]">
         {children}

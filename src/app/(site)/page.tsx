@@ -41,10 +41,10 @@ export default function HomePage() {
                 </Link>
 
                 <Link
-                  href="/who-i-work-with"
+                  href="/core-areas"
                   className="inline-flex items-center justify-center px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-[#1C241E] bg-[#FFFFFF] hover:bg-[var(--accent-wash)] border border-[#E2E6E2] rounded-sm transition-colors"
                 >
-                  Who I Work With
+                  Core Areas
                 </Link>
               </div>
             </div>
@@ -78,12 +78,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Who I Work With Overview */}
-      <section className="py-20 bg-[#F9F8F5]" id="who-i-work-with">
+      {/* Core Areas Overview */}
+      <section className="py-20 bg-[#F9F8F5]" id="core-areas">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-12 space-y-3">
             <h2 className="font-serif text-3xl sm:text-4xl text-[#1C241E]">
-              Who I Work With
+              <FormattedText content={content.whoIWorkWithTitle} />
             </h2>
             <p className="text-sm text-[#4A544C] leading-relaxed font-light">
               <FormattedText content={content.whoIWorkWithIntro} />
@@ -104,10 +104,10 @@ export default function HomePage() {
 
           <div className="mt-10 text-center">
             <Link
-              href="/who-i-work-with"
+              href="/core-areas"
               className="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-[var(--accent-primary)] hover:text-[var(--accent-dark)] transition-colors"
             >
-              Explore Full Practice Specializations for Individuals, Parents & Partners
+              Explore Core Areas
               <ArrowRight className="ml-1.5 w-3.5 h-3.5" />
             </Link>
           </div>

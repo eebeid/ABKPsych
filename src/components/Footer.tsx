@@ -53,22 +53,22 @@ export function Footer({
                 </Link>
               </li>
               <li>
-                <Link href="/who-i-work-with" className="hover:text-[#F9F8F5] transition-colors font-medium">
-                  Who I Work With
+                <Link href="/core-areas" className="hover:text-[#F9F8F5] transition-colors font-medium">
+                  Core Areas
                 </Link>
               </li>
               <li className="pl-3 text-[11px] text-[#98A89A]">
-                <Link href="/who-i-work-with#individuals" className="hover:text-[#F9F8F5] transition-colors">
+                <Link href="/core-areas#individuals" className="hover:text-[#F9F8F5] transition-colors">
                   • Individuals
                 </Link>
               </li>
               <li className="pl-3 text-[11px] text-[#98A89A]">
-                <Link href="/who-i-work-with#parents" className="hover:text-[#F9F8F5] transition-colors">
+                <Link href="/core-areas#parents" className="hover:text-[#F9F8F5] transition-colors">
                   • Parents
                 </Link>
               </li>
               <li className="pl-3 text-[11px] text-[#98A89A]">
-                <Link href="/who-i-work-with#partners" className="hover:text-[#F9F8F5] transition-colors">
+                <Link href="/core-areas#partners" className="hover:text-[#F9F8F5] transition-colors">
                   • Partners
                 </Link>
               </li>

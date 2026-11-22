@@ -1,12 +1,12 @@
 import { Metadata } from "next";
-import { UserCheck, HeartHandshake, Users, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { FormattedText } from "@/components/FormattedText";
 import { getContent } from "@/lib/contentStore";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Who I Work With | Individuals, Parents & Partners | ABK Psychological Services",
+  title: "Core Areas | ABK Psychological Services",
   description:
     "Psychotherapy for adolescents and adults navigating autism and ADHD, as well as parents and partners processing the emotional impact of a diagnosis.",
 };
@@ -14,17 +14,6 @@ export const metadata: Metadata = {
 export default function WhoIWorkWithPage() {
   const content = getContent();
   const audiences = content.audiences;
-
-  const getIcon = (id: string) => {
-    switch (id) {
-      case "parents":
-        return <HeartHandshake className="w-6 h-6 text-[var(--accent-primary)]" />;
-      case "partners":
-        return <Users className="w-6 h-6 text-[var(--accent-primary)]" />;
-      default:
-        return <UserCheck className="w-6 h-6 text-[var(--accent-primary)]" />;
-    }
-  };
 
   return (
     <div className="space-y-0">
@@ -63,20 +52,15 @@ export default function WhoIWorkWithPage() {
           }`}
         >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-[var(--accent-wash)] flex items-center justify-center">
-                {getIcon(audience.id)}
-              </div>
-              <div>
-                <h2 className="font-serif text-3xl text-[#1C241E]">
-                  {audience.title}
-                </h2>
-                {audience.subtitle && (
-                  <p className="text-xs text-[var(--accent-muted)] uppercase tracking-wider font-medium mt-0.5">
-                    {audience.subtitle}
-                  </p>
-                )}
-              </div>
+            <div>
+              <h2 className="font-serif text-3xl text-[#1C241E]">
+                {audience.title}
+              </h2>
+              {audience.subtitle && (
+                <p className="text-xs text-[var(--accent-muted)] uppercase tracking-wider font-medium mt-0.5">
+                  {audience.subtitle}
+                </p>
+              )}
             </div>
 
             <div className="space-y-4 text-base text-[#4A544C] font-light leading-relaxed whitespace-pre-line">

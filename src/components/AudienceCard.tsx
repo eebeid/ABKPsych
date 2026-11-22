@@ -21,7 +21,7 @@ export function AudienceCard({ audience }: AudienceCardProps) {
     }
   };
 
-  const targetLink = `/who-i-work-with${audience.anchor}`;
+  const targetLink = `/core-areas${audience.anchor}`;
 
   return (
     <article className="editorial-card p-7 rounded-sm flex flex-col justify-between h-full group border border-[#E2E6E2] hover:border-[var(--accent-primary)]/50">

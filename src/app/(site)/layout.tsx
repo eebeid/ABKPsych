@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { practiceConfig } from "@/config/practiceConfig";
 import { getContent } from "@/lib/contentStore";
 import { getPalette } from "@/lib/palettes";
+import { getFontOption } from "@/lib/fonts";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -56,12 +57,19 @@ export default function SiteLayout({
 }) {
   const content = getContent();
   const palette = getPalette(content.themePalette);
+  const headingFontOpt = getFontOption(content.headingFont);
+  const bodyFontOpt = getFontOption(content.bodyFont);
   const paletteVars = {
     "--accent-primary": palette.primary,
     "--accent-dark": palette.dark,
     "--accent-muted": palette.muted,
     "--accent-wash": palette.wash,
     "--accent-border": palette.border,
+    "--font-serif": headingFontOpt.headingFamily,
+    "--font-serif-family": headingFontOpt.headingFamily,
+    "--font-sans": bodyFontOpt.bodyFamily,
+    "--font-sans-family": bodyFontOpt.bodyFamily,
+    fontFamily: bodyFontOpt.bodyFamily,
   } as React.CSSProperties;
 
   // JSON-LD structured data

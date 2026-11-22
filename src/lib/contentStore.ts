@@ -9,6 +9,8 @@ const CONTENT_FILE = path.join(DATA_DIR, "content.json");
 export type EditableContent = {
   // ── Practice meta ──
   themePalette: string;
+  headingFont: string;
+  bodyFont: string;
   practiceName: string;
   psychologistName: string;
   doctorTitle: string;
@@ -82,6 +84,8 @@ export function defaultContent(): EditableContent {
   return {
     // Practice meta
     themePalette: "taupe",
+    headingFont: "default",
+    bodyFont: "default",
     practiceName: practiceConfig.practiceName,
     psychologistName: practiceConfig.psychologistName,
     doctorTitle: practiceConfig.doctorTitle,
@@ -125,7 +129,7 @@ export function defaultContent(): EditableContent {
       "Connect directly with Dr. Krimitsos to discuss psychotherapy for yourself, your child, or your relationship in a thoughtful, confidential setting.",
     // Page Titles
     aboutTitle: `About ${practiceConfig.practiceName}`,
-    whoIWorkWithTitle: "Who I Work With",
+    whoIWorkWithTitle: "Core Areas",
     faqTitle: "Frequently Asked Questions",
     contactTitle: "Inquiries",
     // About page

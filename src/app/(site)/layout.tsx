@@ -116,6 +116,13 @@ export default function SiteLayout({
         university={content.university}
         licensure={content.licensure}
         email={content.email}
+        footerBlurb={content.footerBlurb}
+        footerPracticeModelHeading={content.footerPracticeModelHeading}
+        footerPracticeModelItems={content.footerPracticeModelItems}
+        footerDisclaimerHeading={content.footerDisclaimerHeading}
+        footerDisclaimerBody={content.footerDisclaimerBody}
+        footerCopyright={content.footerCopyright}
+        audiences={content.audiences}
       />
     </div>
   );

@@ -17,6 +17,7 @@ import {
   HelpCircle,
   Mail,
   Settings,
+  PanelBottom,
   Plus,
   Trash2,
   ExternalLink,
@@ -433,6 +434,7 @@ type PageId =
   | "core-areas"
   | "faq"
   | "contact"
+  | "footer"
   | "settings"
   | "seo";
 
@@ -477,6 +479,13 @@ const NAV_ITEMS: {
     sublabel: "Email, phone & disclaimers",
     icon: Mail,
     href: "/contact",
+  },
+  {
+    id: "footer",
+    label: "Footer",
+    sublabel: "Blurb, practice model, disclaimer & copyright",
+    icon: PanelBottom,
+    href: "/",
   },
   {
     id: "settings",
@@ -1005,6 +1014,113 @@ function ContactEditor({
           multiline
           rows={3}
           hint="Shown in the info banner on the contact form"
+        />
+      </div>
+    </div>
+  );
+}
+
+function FooterEditor({
+  content,
+  set,
+}: {
+  content: EditableContent;
+  set: (k: keyof EditableContent, v: unknown) => void;
+}) {
+  const items = content.footerPracticeModelItems || [];
+
+  const updateItem = (idx: number, val: string) => {
+    const next = [...items];
+    next[idx] = val;
+    set("footerPracticeModelItems", next);
+  };
+
+  const addItem = () => {
+    set("footerPracticeModelItems", [...items, ""]);
+  };
+
+  const removeItem = (idx: number) => {
+    set(
+      "footerPracticeModelItems",
+      items.filter((_, i) => i !== idx)
+    );
+  };
+
+  return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Footer"
+        description="Customize the footer content shown at the bottom of every page."
+        href="/"
+      />
+      <div className="card-panel space-y-5">
+        <SectionDivider label="Practice Summary" />
+        <Field
+          label="Footer Blurb"
+          value={content.footerBlurb}
+          onChange={(v) => set("footerBlurb", v)}
+          multiline
+          rows={3}
+          hint="Short description shown under the practice name in the left footer column."
+        />
+      </div>
+      <div className="card-panel space-y-5">
+        <SectionDivider label="Practice Model Column" />
+        <Field
+          label="Column Heading"
+          value={content.footerPracticeModelHeading}
+          onChange={(v) => set("footerPracticeModelHeading", v)}
+        />
+        <div className="space-y-2.5">
+          <label className="block text-[11px] font-bold uppercase tracking-widest text-[#4F6752]">
+            Bullet Items
+          </label>
+          {items.map((item, idx) => (
+            <div key={idx} className="flex items-center gap-2">
+              <input
+                type="text"
+                value={item}
+                onChange={(e) => updateItem(idx, e.target.value)}
+                className="flex-1 border border-[#D5DAD5] rounded-sm px-3 py-2 text-sm text-[#1C241E] focus:outline-none focus:ring-2 focus:ring-[#4F6752] bg-white"
+              />
+              <button
+                type="button"
+                onClick={() => removeItem(idx)}
+                className="p-2 text-red-400 hover:text-red-600 transition-colors"
+                title="Remove item"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addItem}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4F6752] hover:text-[#3E5341] pt-1"
+          >
+            <Plus className="w-3.5 h-3.5" /> Add Bullet Item
+          </button>
+        </div>
+      </div>
+      <div className="card-panel space-y-5">
+        <SectionDivider label="Disclaimer & Copyright" />
+        <Field
+          label="Disclaimer Heading"
+          value={content.footerDisclaimerHeading}
+          onChange={(v) => set("footerDisclaimerHeading", v)}
+        />
+        <Field
+          label="Disclaimer Body"
+          value={content.footerDisclaimerBody}
+          onChange={(v) => set("footerDisclaimerBody", v)}
+          multiline
+          rows={3}
+        />
+        <Field
+          label="Custom Copyright Line (Optional)"
+          value={content.footerCopyright}
+          onChange={(v) => set("footerCopyright", v)}
+          hint="Leave blank to use the automatic copyright line with current year, practice name, and doctor title."
         />
       </div>
     </div>
@@ -1565,6 +1681,7 @@ function Editor({ onLogout }: { onLogout: () => void }) {
             {activePage === "core-areas" && <WhoEditor content={content} set={set} />}
             {activePage === "faq" && <FAQEditor content={content} set={set} />}
             {activePage === "contact" && <ContactEditor content={content} set={set} />}
+            {activePage === "footer" && <FooterEditor content={content} set={set} />}
             {activePage === "settings" && <SettingsEditor content={content} set={set} />}
             {activePage === "seo" && <SEOEditor content={content} set={set} />}
           </div>

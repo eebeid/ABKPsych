@@ -56,6 +56,13 @@ export type EditableContent = {
   aboutQuote: string;
   aboutPara2: string;
   aboutPara3: string;
+  // ── Footer ──
+  footerBlurb: string;
+  footerPracticeModelHeading: string;
+  footerPracticeModelItems: string[];
+  footerDisclaimerHeading: string;
+  footerDisclaimerBody: string;
+  footerCopyright: string;
   // ── SEO ──
   metaTitle: string;
   metaDescription: string;
@@ -144,6 +151,20 @@ export function defaultContent(): EditableContent {
       "I wanted to create a practice that brings together over 20 years of experience in diagnosis and psychotherapy, with an understanding that later-life identification is not simply about putting a name to longstanding difficulties.",
     aboutPara3:
       "It can also be an opportunity to re-examine the life already lived, individually and together, with a clearer understanding of what has been difficult, what has helped, and what may need to change going forward.",
+    // Footer
+    footerBlurb:
+      "An intentionally small, direct-service psychotherapy practice for adolescents, adults, parents, and partners.",
+    footerPracticeModelHeading: "Practice Model",
+    footerPracticeModelItems: [
+      "Intentionally Small & Direct Service",
+      "Direct Care with Dr. Krimitsos",
+      "Personalized, Confidential Psychotherapy",
+      "Out-of-Network Superbills Provided",
+    ],
+    footerDisclaimerHeading: "Important Disclaimer",
+    footerDisclaimerBody:
+      "Submitting an inquiry does not establish a therapist-client relationship. In a crisis or mental health emergency, please call <strong>988</strong> or visit an emergency room immediately.",
+    footerCopyright: "",
     // SEO
     metaTitle: practiceConfig.meta.title,
     metaDescription: practiceConfig.meta.description,

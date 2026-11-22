@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { practiceConfig } from "@/config/practiceConfig";
 import { ShieldCheck } from "lucide-react";
+import { FormattedText } from "@/components/FormattedText";
 
 export function Footer({
   practiceName = practiceConfig.practiceName,
@@ -9,6 +10,18 @@ export function Footer({
   university = practiceConfig.university,
   licensure = practiceConfig.licensure,
   email = practiceConfig.email,
+  footerBlurb = "An intentionally small, direct-service psychotherapy practice for adolescents, adults, parents, and partners.",
+  footerPracticeModelHeading = "Practice Model",
+  footerPracticeModelItems = [
+    "Intentionally Small & Direct Service",
+    "Direct Care with Dr. Krimitsos",
+    "Personalized, Confidential Psychotherapy",
+    "Out-of-Network Superbills Provided",
+  ],
+  footerDisclaimerHeading = "Important Disclaimer",
+  footerDisclaimerBody = "Submitting an inquiry does not establish a therapist-client relationship. In a crisis or mental health emergency, please call <strong>988</strong> or visit an emergency room immediately.",
+  footerCopyright = "",
+  audiences = [],
 }: {
   practiceName?: string;
   doctorTitle?: string;
@@ -16,6 +29,13 @@ export function Footer({
   university?: string;
   licensure?: string;
   email?: string;
+  footerBlurb?: string;
+  footerPracticeModelHeading?: string;
+  footerPracticeModelItems?: string[];
+  footerDisclaimerHeading?: string;
+  footerDisclaimerBody?: string;
+  footerCopyright?: string;
+  audiences?: { id: string; title: string }[];
 } = {}) {
   return (
     <footer className="bg-[#222923] text-[#F9F8F5] border-t border-[#343E36] pt-14 pb-10 mt-auto">
@@ -29,9 +49,11 @@ export function Footer({
             <p className="text-xs uppercase tracking-widest text-[#98A89A] font-semibold">
               {doctorTitle}
             </p>
-            <p className="text-xs text-[#CBD4CB] leading-relaxed font-light">
-              An intentionally small, direct-service psychotherapy practice for adolescents, adults, parents, and partners.
-            </p>
+            {footerBlurb && (
+              <div className="text-xs text-[#CBD4CB] leading-relaxed font-light">
+                <FormattedText as="p" content={footerBlurb} />
+              </div>
+            )}
             <div className="pt-1 text-xs text-[#98A89A] space-y-1">
               <p className="flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 shrink-0 text-[#98A89A]" />
@@ -57,24 +79,16 @@ export function Footer({
                   Core Areas
                 </Link>
               </li>
-              <li className="pl-3 text-[11px] text-[#98A89A]">
-                <Link href="/core-areas#individuals" className="hover:text-[#F9F8F5] transition-colors">
-                  • Individuals
-                </Link>
-              </li>
-              <li className="pl-3 text-[11px] text-[#98A89A]">
-                <Link href="/core-areas#parents" className="hover:text-[#F9F8F5] transition-colors">
-                  • Parents
-                </Link>
-              </li>
-              <li className="pl-3 text-[11px] text-[#98A89A]">
-                <Link href="/core-areas#partners" className="hover:text-[#F9F8F5] transition-colors">
-                  • Partners
-                </Link>
-              </li>
+              {audiences.map((aud) => (
+                <li key={aud.id} className="pl-3 text-[11px] text-[#98A89A]">
+                  <Link href={`/core-areas#${aud.id}`} className="hover:text-[#F9F8F5] transition-colors">
+                    • {aud.title}
+                  </Link>
+                </li>
+              ))}
               <li>
                 <Link href="/about" className="hover:text-[#F9F8F5] transition-colors">
-                  About ABK Psychological Services
+                  About {practiceName}
                 </Link>
               </li>
               <li>
@@ -92,14 +106,17 @@ export function Footer({
 
           {/* Practice Model & Direct Inquiry */}
           <div>
-            <h3 className="text-xs uppercase tracking-widest text-[#98A89A] font-semibold mb-3">
-              Practice Model
-            </h3>
+            {footerPracticeModelHeading && (
+              <h3 className="text-xs uppercase tracking-widest text-[#98A89A] font-semibold mb-3">
+                {footerPracticeModelHeading}
+              </h3>
+            )}
             <ul className="space-y-2 text-xs text-[#CBD4CB]">
-              <li>Intentionally Small & Direct Service</li>
-              <li>Direct Care with Dr. Krimitsos</li>
-              <li>Personalized, Confidential Psychotherapy</li>
-              <li>Out-of-Network Superbills Provided</li>
+              {footerPracticeModelItems.filter(Boolean).map((item, idx) => (
+                <li key={idx}>
+                  <FormattedText content={item} />
+                </li>
+              ))}
             </ul>
             <div className="mt-4 pt-3 border-t border-[#343E36] text-xs text-[#CBD4CB]">
               <p>Email: <a href={`mailto:${email}`} className="text-[#A3B8A5] hover:underline font-medium">{email}</a></p>
@@ -108,19 +125,25 @@ export function Footer({
 
           {/* Clinical Disclaimer */}
           <div className="bg-[#1A1F1B] p-4 rounded border border-[#343E36] space-y-2">
-            <h4 className="text-[11px] uppercase tracking-wider font-semibold text-[#98A89A]">
-              Important Disclaimer
-            </h4>
-            <p className="text-xs text-[#CBD4CB] leading-relaxed font-light">
-              Submitting an inquiry does not establish a therapist-client relationship. In a crisis or mental health emergency, please call <strong>988</strong> or visit an emergency room immediately.
-            </p>
+            {footerDisclaimerHeading && (
+              <h4 className="text-[11px] uppercase tracking-wider font-semibold text-[#98A89A]">
+                {footerDisclaimerHeading}
+              </h4>
+            )}
+            {footerDisclaimerBody && (
+              <div className="text-xs text-[#CBD4CB] leading-relaxed font-light">
+                <FormattedText as="p" content={footerDisclaimerBody} />
+              </div>
+            )}
           </div>
         </div>
 
         {/* Bottom Legal & Rights */}
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-[#98A89A] gap-3">
           <p>
-            © {new Date().getFullYear()} {practiceName}. All rights reserved. {doctorTitle}.
+            {footerCopyright
+              ? footerCopyright
+              : `© ${new Date().getFullYear()} ${practiceName}. All rights reserved. ${doctorTitle}.`}
           </p>
           <div className="flex items-center space-x-4">
             <Link href="/privacy" className="hover:text-[#F9F8F5] transition-colors">

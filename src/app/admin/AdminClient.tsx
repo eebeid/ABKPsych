@@ -882,6 +882,13 @@ function FAQEditor({
           onChange={(v) => set("faqTitle", v)}
           wysiwyg
         />
+        <Field
+          label="Introductory Paragraph"
+          value={content.faqIntro}
+          onChange={(v) => set("faqIntro", v)}
+          multiline
+          rows={3}
+        />
       </div>
       {content.faq.map((item, fi) => (
         <div key={item.id} className="card-panel space-y-4">
@@ -981,6 +988,13 @@ function ContactEditor({
           wysiwyg
         />
         <Field
+          label="Introductory Paragraph"
+          value={content.contactIntro}
+          onChange={(v) => set("contactIntro", v)}
+          multiline
+          rows={3}
+        />
+        <Field
           label="Email Address"
           value={content.email}
           onChange={(v) => set("email", v)}
@@ -995,6 +1009,45 @@ function ContactEditor({
           value={content.officeAddress}
           onChange={(v) => set("officeAddress", v)}
           hint="e.g. Telehealth Psychotherapy Practice"
+        />
+      </div>
+      <div className="card-panel space-y-5">
+        <SectionDivider label="Practice Details Sidebar (Right Column)" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Field
+            label="Psychologist"
+            value={content.doctorTitle}
+            onChange={(v) => set("doctorTitle", v)}
+          />
+          <Field
+            label="Credentials"
+            value={content.credentials}
+            onChange={(v) => set("credentials", v)}
+          />
+        </div>
+        <Field
+          label="Practice Model"
+          value={content.contactPracticeModel}
+          onChange={(v) => set("contactPracticeModel", v)}
+          multiline
+          rows={2}
+          hint="Shown under 'Practice Model' in the right sidebar"
+        />
+        <Field
+          label="Fees Summary"
+          value={content.fees}
+          onChange={(v) => set("fees", v)}
+          multiline
+          rows={2}
+          hint="First part of 'Insurance & Fees' in the right sidebar"
+        />
+        <Field
+          label="Insurance Policy"
+          value={content.insurancePolicy}
+          onChange={(v) => set("insurancePolicy", v)}
+          multiline
+          rows={2}
+          hint="Second part of 'Insurance & Fees' in the right sidebar"
         />
       </div>
       <div className="card-panel space-y-5">

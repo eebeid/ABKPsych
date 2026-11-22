@@ -23,9 +23,11 @@ export default function ContactPage() {
           <FormattedText content={content.contactTitle} />
         </h1>
 
-        <p className="text-base text-[#4A544C] max-w-2xl mx-auto font-light leading-relaxed">
-          Reach out to request an initial consultation directly with {content.doctorTitle}.
-        </p>
+        {content.contactIntro && (
+          <p className="text-base text-[#4A544C] max-w-2xl mx-auto font-light leading-relaxed">
+            <FormattedText content={content.contactIntro} />
+          </p>
+        )}
       </section>
 
       {/* Main Contact Grid */}
@@ -74,15 +76,15 @@ export default function ContactPage() {
                   <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Practice Model
                   </strong>
-                  {content.sessionLength ? `Sessions: ${content.sessionLength}. ` : ""}
-                  Intentionally small, private, direct-service practice.
+                  <FormattedText content={content.contactPracticeModel} />
                 </div>
 
                 <div>
                   <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Insurance & Fees
                   </strong>
-                  {content.fees || "Private, direct-service practice."} {content.insurancePolicy || "Services provided privately and directly."}
+                  <FormattedText content={content.fees} />{" "}
+                  <FormattedText content={content.insurancePolicy} />
                 </div>
               </div>
             </div>

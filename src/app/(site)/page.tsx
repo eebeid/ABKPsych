@@ -51,7 +51,7 @@ export default function HomePage() {
 
             {/* Right Doctor Portrait Column */}
             <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
-              <div className="relative rounded-sm overflow-hidden border border-[#E2E6E2] shadow-sm max-w-[320px] w-full">
+              <div className="relative rounded-sm overflow-hidden border border-[#E2E6E2] shadow-sm max-w-[260px] w-full">
                 <Image
                   src="/images/doctor-portrait-v2.png"
                   alt={`${content.doctorTitle} - ${content.practiceName}`}

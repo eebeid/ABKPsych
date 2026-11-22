@@ -44,11 +44,14 @@ export type EditableContent = {
   clinicalDistinctionPara2: string;
   ctaHeadline: string;
   ctaBody: string;
-  // ── Page Titles ──
+  // ── Page Titles & Intros ──
   aboutTitle: string;
   whoIWorkWithTitle: string;
   faqTitle: string;
+  faqIntro: string;
   contactTitle: string;
+  contactIntro: string;
+  contactPracticeModel: string;
   // ── About page ──
   aboutSubtitle: string;
   aboutOpening: string;
@@ -134,11 +137,14 @@ export function defaultContent(): EditableContent {
     ctaHeadline: "Schedule an Initial Consultation",
     ctaBody:
       "Connect directly with Dr. Krimitsos to discuss psychotherapy for yourself, your child, or your relationship in a thoughtful, confidential setting.",
-    // Page Titles
+    // Page Titles & Intros
     aboutTitle: `About ${practiceConfig.practiceName}`,
     whoIWorkWithTitle: "Core Areas",
     faqTitle: "Frequently Asked Questions",
+    faqIntro: `Information about practice fit, individual partner boundaries, fees, and starting therapy with ${practiceConfig.doctorTitle}.`,
     contactTitle: "Inquiries",
+    contactIntro: `Reach out to request an initial consultation directly with ${practiceConfig.doctorTitle}.`,
+    contactPracticeModel: `Sessions: ${practiceConfig.sessionLength}. Intentionally small, private, direct-service practice.`,
     // About page
     aboutSubtitle:
       "Bringing together over 20+ years of clinical experience in diagnosis and psychotherapy.",

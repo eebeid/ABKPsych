@@ -23,9 +23,11 @@ export default function FAQPage() {
         <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#1C241E]">
           <FormattedText content={content.faqTitle} />
         </h1>
-        <p className="text-base text-[#4A544C] max-w-2xl mx-auto font-light leading-relaxed">
-          Information about practice fit, individual partner boundaries, fees, and starting therapy with {content.doctorTitle}.
-        </p>
+        {content.faqIntro && (
+          <p className="text-base text-[#4A544C] max-w-2xl mx-auto font-light leading-relaxed">
+            <FormattedText content={content.faqIntro} />
+          </p>
+        )}
       </section>
 
       {/* Accordion Container */}

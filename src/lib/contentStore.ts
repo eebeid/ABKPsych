@@ -1,6 +1,13 @@
 import fs from "fs";
 import path from "path";
 import { practiceConfig, audienceData, faqData } from "@/config/practiceConfig";
+import {
+  DEFAULT_SITE_STYLES,
+  type SiteStyles,
+  type ElementStyleConfig,
+} from "@/lib/siteStyles";
+
+export { DEFAULT_SITE_STYLES, type SiteStyles, type ElementStyleConfig };
 
 // Stored outside .next so it survives builds
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -11,6 +18,7 @@ export type EditableContent = {
   themePalette: string;
   headingFont: string;
   bodyFont: string;
+  siteStyles: SiteStyles;
   practiceName: string;
   psychologistName: string;
   doctorTitle: string;
@@ -96,6 +104,7 @@ export function defaultContent(): EditableContent {
     themePalette: "taupe",
     headingFont: "default",
     bodyFont: "default",
+    siteStyles: DEFAULT_SITE_STYLES,
     practiceName: practiceConfig.practiceName,
     psychologistName: practiceConfig.psychologistName,
     doctorTitle: practiceConfig.doctorTitle,
@@ -211,6 +220,15 @@ export function getContent(): EditableContent {
   return {
     ...defaults,
     ...saved,
+    siteStyles: {
+      ...DEFAULT_SITE_STYLES,
+      ...(saved.siteStyles || {}),
+      h1: { ...DEFAULT_SITE_STYLES.h1, ...(saved.siteStyles?.h1 || {}) },
+      h2: { ...DEFAULT_SITE_STYLES.h2, ...(saved.siteStyles?.h2 || {}) },
+      h3: { ...DEFAULT_SITE_STYLES.h3, ...(saved.siteStyles?.h3 || {}) },
+      h4: { ...DEFAULT_SITE_STYLES.h4, ...(saved.siteStyles?.h4 || {}) },
+      p: { ...DEFAULT_SITE_STYLES.p, ...(saved.siteStyles?.p || {}) },
+    },
     faq: saved.faq && saved.faq.length > 0 ? saved.faq : defaults.faq,
     audiences: saved.audiences && saved.audiences.length > 0 ? saved.audiences : defaults.audiences,
   };

@@ -59,6 +59,15 @@ export default function SiteLayout({
   const palette = getPalette(content.themePalette);
   const headingFontOpt = getFontOption(content.headingFont);
   const bodyFontOpt = getFontOption(content.bodyFont);
+  const s = content.siteStyles;
+  const dynamicStylesheet = `
+    .site-root main h1 { font-size: ${s.h1.fontSize}; line-height: ${s.h1.lineHeight}; font-weight: ${s.h1.fontWeight}; color: ${s.h1.color}; }
+    .site-root main h2 { font-size: ${s.h2.fontSize}; line-height: ${s.h2.lineHeight}; font-weight: ${s.h2.fontWeight}; color: ${s.h2.color}; }
+    .site-root main h3 { font-size: ${s.h3.fontSize}; line-height: ${s.h3.lineHeight}; font-weight: ${s.h3.fontWeight}; color: ${s.h3.color}; }
+    .site-root main h4 { font-size: ${s.h4.fontSize}; line-height: ${s.h4.lineHeight}; font-weight: ${s.h4.fontWeight}; color: ${s.h4.color}; }
+    .site-root main p { font-size: ${s.p.fontSize}; line-height: ${s.p.lineHeight}; font-weight: ${s.p.fontWeight}; color: ${s.p.color}; }
+    ${s.customCss || ""}
+  `;
   const paletteVars = {
     "--accent-primary": palette.primary,
     "--accent-dark": palette.dark,
@@ -99,7 +108,8 @@ export default function SiteLayout({
   };
 
   return (
-    <div style={paletteVars} className="min-h-screen flex flex-col">
+    <div style={paletteVars} className="site-root min-h-screen flex flex-col">
+      <style dangerouslySetInnerHTML={{ __html: dynamicStylesheet }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

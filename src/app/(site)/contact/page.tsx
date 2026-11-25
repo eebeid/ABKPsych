@@ -51,7 +51,7 @@ export default function ContactPage() {
                   <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
                     Psychologist
                   </strong>
-                  {content.doctorTitle} ({content.credentials})
+                  {content.doctorTitle}
                 </div>
 
                 <div>

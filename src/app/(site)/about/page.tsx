@@ -41,7 +41,7 @@ export default function AboutPage() {
                 <FormattedText content={content.aboutPara1} />
               </p>
 
-              <p className="font-serif text-xl text-[#1C241E] pt-2">
+              <p className="text-xl font-medium text-[#1C241E] pt-2">
                 <FormattedText content={content.aboutQuote} />
               </p>
 
@@ -52,44 +52,6 @@ export default function AboutPage() {
               <p>
                 <FormattedText content={content.aboutPara3} />
               </p>
-            </div>
-
-            {/* Education & Licensure Section */}
-            <div className="pt-8 border-t border-[#E2E6E2] space-y-6">
-              <h2 className="font-serif text-2xl text-[#1C241E]">
-                Education & Licensure
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs text-[#4A544C]">
-                <div className="space-y-1">
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
-                    Doctorate
-                  </strong>
-                  <p className="font-serif text-sm text-[#1C241E]">{content.degree}</p>
-                  <p>{content.university}</p>
-                </div>
-
-                <div className="space-y-1">
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
-                    Doctoral Internship
-                  </strong>
-                  <p className="font-serif text-sm text-[#1C241E]">{content.internship}</p>
-                </div>
-
-                <div className="space-y-1">
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
-                    Bachelor of Arts
-                  </strong>
-                  <p className="font-serif text-sm text-[#1C241E]">{content.bachelors}</p>
-                </div>
-
-                <div className="space-y-1">
-                  <strong className="block text-[#1C241E] font-medium uppercase tracking-wider text-[11px] text-[var(--accent-primary)]">
-                    Licensure
-                  </strong>
-                  <p className="font-serif text-sm text-[#1C241E]">{content.licensure}</p>
-                </div>
-              </div>
             </div>
 
             {/* Bottom Call to Action */}

@@ -76,6 +76,11 @@ h1, h2, h3, h4, .font-serif-editorial {
 }
 
 @layer base {
+  main p,
+  main li {
+    font-family: var(--font-sans);
+  }
+
   main p {
     text-align: justify;
   }

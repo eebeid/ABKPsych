@@ -72,7 +72,7 @@ export default function HomePage() {
           <span className="text-xs uppercase tracking-widest text-[var(--accent-primary)] font-semibold">
             <FormattedText content={content.practiceHighlightHeadline} />
           </span>
-          <p className="text-base sm:text-lg text-[#1C241E] font-serif leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-[#1C241E] leading-relaxed max-w-2xl mx-auto">
             <FormattedText content={content.practiceHighlightBody} />
           </p>
         </div>

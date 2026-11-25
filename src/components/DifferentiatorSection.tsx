@@ -35,7 +35,7 @@ export function DifferentiatorSection() {
             </p>
 
             <div className="p-4 bg-[#EAE8E5] border-l-3 border-[#3F5166] rounded-r-sm space-y-1">
-              <p className="font-serif text-lg text-[#181A1D]">
+              <p className="text-lg font-medium text-[#181A1D]">
                 The assessment answers one question. Therapy makes room for the questions that follow.
               </p>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   LogOut,
   Save,
@@ -18,6 +18,7 @@ import {
   Mail,
   Settings,
   PanelBottom,
+  Paintbrush,
   Plus,
   Trash2,
   ExternalLink,
@@ -34,14 +35,46 @@ import {
   Heading3,
   Quote,
   Type,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
+  Undo2,
+  Redo2,
+  RemoveFormatting,
+  CornerDownLeft,
   Code,
 } from "lucide-react";
 import type { EditableContent } from "@/lib/contentStore";
+import {
+  DEFAULT_SITE_STYLES,
+  type SiteStyles,
+  type ElementStyleConfig,
+} from "@/lib/siteStyles";
 import { THEME_PALETTES } from "@/lib/palettes";
 import { FONT_OPTIONS } from "@/lib/fonts";
 import { FormattedText } from "@/components/FormattedText";
 
 /* ─── Shared field components ────────────────────────── */
+const FONT_SIZE_OPTIONS = [
+  { label: "Size", value: "" },
+  { label: "Extra Small", value: "text-xs" },
+  { label: "Small", value: "text-sm" },
+  { label: "Normal", value: "text-base" },
+  { label: "Large", value: "text-lg" },
+  { label: "Extra Large", value: "text-xl" },
+  { label: "2X Large", value: "text-2xl" },
+];
+
+const ALL_SIZE_CLASSES = [
+  "text-xs",
+  "text-sm",
+  "text-base",
+  "text-lg",
+  "text-xl",
+  "text-2xl",
+];
+
 function Field({
   label,
   value,
@@ -59,66 +92,146 @@ function Field({
   hint?: string;
   wysiwyg?: boolean;
 }) {
-  const [showPreview, setShowPreview] = useState(false);
+  const [showHtml, setShowHtml] = useState(false);
+  const editorRef = useRef<HTMLDivElement | null>(null);
+  const savedRangeRef = useRef<Range | null>(null);
+  const lastHtmlRef = useRef<string>(value || "");
   const textareaId = `field-${label.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
+  const isRich = multiline || wysiwyg;
 
-  const applyTag = (openTag: string, closeTag: string) => {
-    const el = document.getElementById(textareaId) as HTMLTextAreaElement | HTMLInputElement | null;
-    if (!el) {
-      onChange(`${value}${openTag}${closeTag}`);
+  // Sync external value changes into the contentEditable div without disturbing typing cursor
+  useEffect(() => {
+    if (!isRich || showHtml || !editorRef.current) return;
+    const normalized = value || "";
+    if (editorRef.current.innerHTML !== normalized && lastHtmlRef.current !== normalized) {
+      editorRef.current.innerHTML = normalized;
+      lastHtmlRef.current = normalized;
+    }
+  }, [value, isRich, showHtml]);
+
+  // Populate contentEditable when switching back from HTML mode
+  useEffect(() => {
+    if (isRich && !showHtml && editorRef.current) {
+      editorRef.current.innerHTML = value || "";
+      lastHtmlRef.current = value || "";
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showHtml]);
+
+  const saveSelection = () => {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0 && editorRef.current?.contains(sel.anchorNode)) {
+      savedRangeRef.current = sel.getRangeAt(0).cloneRange();
+    }
+  };
+
+  const restoreSelection = () => {
+    if (!editorRef.current) return;
+    editorRef.current.focus();
+    const sel = window.getSelection();
+    if (sel && savedRangeRef.current) {
+      sel.removeAllRanges();
+      sel.addRange(savedRangeRef.current);
+    }
+  };
+
+  const emitChange = () => {
+    if (!editorRef.current) return;
+    const html = editorRef.current.innerHTML;
+    lastHtmlRef.current = html;
+    onChange(html);
+  };
+
+  const execCmd = (command: string, val?: string) => {
+    restoreSelection();
+    document.execCommand(command, false, val);
+    emitChange();
+    saveSelection();
+  };
+
+  const wrapSelectionWithClass = (className: string, replaceClasses: string[] = []) => {
+    restoreSelection();
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0);
+
+    // If selection is inside a span, update its class in-place when replacing classes
+    let parentEl: HTMLElement | null =
+      range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE
+        ? (range.commonAncestorContainer as HTMLElement)
+        : range.commonAncestorContainer.parentElement;
+
+    if (parentEl && parentEl.tagName === "SPAN" && editorRef.current?.contains(parentEl)) {
+      const classes = new Set(parentEl.className.split(/\s+/).filter(Boolean));
+      replaceClasses.forEach((c) => classes.delete(c));
+      if (className) classes.add(className);
+      parentEl.className = Array.from(classes).join(" ");
+      emitChange();
+      saveSelection();
       return;
     }
-    const start = el.selectionStart ?? value.length;
-    const end = el.selectionEnd ?? value.length;
-    const selected = value.substring(start, end);
-    const replacement = `${openTag}${selected || "text"}${closeTag}`;
-    const nextVal = value.substring(0, start) + replacement + value.substring(end);
-    onChange(nextVal);
-    setTimeout(() => {
-      el.focus();
-      const newCursorStart = start + openTag.length;
-      const newCursorEnd = newCursorStart + (selected ? selected.length : 4);
-      el.setSelectionRange(newCursorStart, newCursorEnd);
-    }, 0);
+
+    if (range.collapsed) return;
+
+    const span = document.createElement("span");
+    if (className) span.className = className;
+    try {
+      range.surroundContents(span);
+    } catch {
+      const frag = range.extractContents();
+      span.appendChild(frag);
+      range.insertNode(span);
+    }
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.removeAllRanges();
+    sel.addRange(newRange);
+    savedRangeRef.current = newRange.cloneRange();
+    emitChange();
+  };
+
+  const applyFontSize = (sizeClass: string) => {
+    if (!sizeClass) return;
+    wrapSelectionWithClass(sizeClass, ALL_SIZE_CLASSES);
   };
 
   const addLink = () => {
+    saveSelection();
     const url = window.prompt("Enter destination URL (e.g. /contact or https://...):", "https://");
     if (!url) return;
-    const el = document.getElementById(textareaId) as HTMLTextAreaElement | HTMLInputElement | null;
-    const start = el?.selectionStart ?? value.length;
-    const end = el?.selectionEnd ?? value.length;
-    const selected = value.substring(start, end) || "link text";
-    const tag = `<a href="${url}">${selected}</a>`;
-    const nextVal = value.substring(0, start) + tag + value.substring(end);
-    onChange(nextVal);
+    execCmd("createLink", url);
   };
 
-  const applyList = (ordered: boolean) => {
-    const tag = ordered ? "ol" : "ul";
-    const el = document.getElementById(textareaId) as HTMLTextAreaElement | HTMLInputElement | null;
-    const start = el?.selectionStart ?? value.length;
-    const end = el?.selectionEnd ?? value.length;
-    const selected = value.substring(start, end).trim();
-    const lines = selected
-      ? selected.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)
-      : ["List item 1", "List item 2"];
-    const items = lines.map((line) => `  <li>${line}</li>`).join("\n");
-    const replacement = `<${tag}>\n${items}\n</${tag}>`;
-    const nextVal = value.substring(0, start) + replacement + value.substring(end);
-    onChange(nextVal);
-    if (el) {
-      setTimeout(() => {
-        el.focus();
-        el.setSelectionRange(start, start + replacement.length);
-      }, 0);
+  const insertLineBreak = () => {
+    restoreSelection();
+    document.execCommand("insertHTML", false, "<br />");
+    emitChange();
+    saveSelection();
+  };
+
+  const clearFormatting = () => {
+    restoreSelection();
+    document.execCommand("removeFormat");
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+      let node: HTMLElement | null =
+        sel.getRangeAt(0).commonAncestorContainer.nodeType === Node.ELEMENT_NODE
+          ? (sel.getRangeAt(0).commonAncestorContainer as HTMLElement)
+          : sel.getRangeAt(0).commonAncestorContainer.parentElement;
+      while (node && node !== editorRef.current) {
+        if (node.tagName === "SPAN") {
+          node.removeAttribute("class");
+          node.removeAttribute("style");
+        }
+        node = node.parentElement;
+      }
     }
+    emitChange();
+    saveSelection();
   };
 
   const cls =
     "w-full border border-[#D5DAD5] rounded-sm px-3 py-2.5 text-sm text-[#1C241E] focus:outline-none focus:ring-2 focus:ring-[#4F6752] focus:border-[#4F6752] bg-white transition-shadow placeholder:text-[#ADB8AE]";
-
-  const isRich = multiline || wysiwyg;
 
   return (
     <div className="space-y-1.5">
@@ -130,29 +243,49 @@ function Field({
           <div className="flex items-center gap-1">
             <button
               type="button"
-              onClick={() => setShowPreview(!showPreview)}
+              onClick={() => setShowHtml(!showHtml)}
               className={`text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded transition-colors flex items-center gap-1 ${
-                showPreview
+                showHtml
                   ? "bg-[#4F6752] text-white"
                   : "bg-[#EFF3EF] text-[#4F6752] hover:bg-[#E2EAE3]"
               }`}
+              title="Toggle raw HTML view"
             >
-              {showPreview ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-              <span>{showPreview ? "Edit Mode" : "Preview"}</span>
+              <Code className="w-3 h-3" />
+              <span>{showHtml ? "Visual Mode" : "HTML"}</span>
             </button>
           </div>
         )}
       </div>
 
-      {isRich && !showPreview && (
+      {isRich && !showHtml && (
         <div className="flex flex-wrap items-center gap-1 bg-[#F9F8F5] border border-[#D5DAD5] border-b-0 px-2 py-1.5 rounded-t-sm text-[#4A544C]">
-          <span className="text-[10px] uppercase font-bold text-[#6B826E] mr-1 tracking-wider hidden sm:inline">
-            Format:
-          </span>
+          <button
+            type="button"
+            title="Undo"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("undo")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <Undo2 className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            title="Redo"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("redo")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <Redo2 className="w-3.5 h-3.5" />
+          </button>
+
+          <span className="w-px h-4 bg-[#D5DAD5] mx-0.5" />
+
           <button
             type="button"
             title="Bold"
-            onClick={() => applyTag("<strong>", "</strong>")}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("bold")}
             className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
             <Bold className="w-3.5 h-3.5" />
@@ -160,7 +293,8 @@ function Field({
           <button
             type="button"
             title="Italic"
-            onClick={() => applyTag("<em>", "</em>")}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("italic")}
             className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
             <Italic className="w-3.5 h-3.5" />
@@ -168,7 +302,8 @@ function Field({
           <button
             type="button"
             title="Underline"
-            onClick={() => applyTag("<u>", "</u>")}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("underline")}
             className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
             <Underline className="w-3.5 h-3.5" />
@@ -176,15 +311,77 @@ function Field({
           <button
             type="button"
             title="Strikethrough"
-            onClick={() => applyTag("<s>", "</s>")}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("strikeThrough")}
             className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
             <Strikethrough className="w-3.5 h-3.5" />
           </button>
+
+          <span className="w-px h-4 bg-[#D5DAD5] mx-0.5" />
+
+          <select
+            aria-label="Block Style"
+            defaultValue=""
+            onChange={(e) => {
+              if (e.target.value) {
+                execCmd("formatBlock", e.target.value);
+                e.target.value = "";
+              }
+            }}
+            className="text-[11px] font-medium bg-white border border-[#D5DAD5] rounded px-1.5 py-0.5 text-[#1C241E] focus:outline-none focus:ring-1 focus:ring-[#4F6752] cursor-pointer"
+            title="Apply heading or paragraph style (tied to site stylesheet)"
+          >
+            <option value="">Style</option>
+            <option value="P">Paragraph (P)</option>
+            <option value="H1">Heading 1 (H1)</option>
+            <option value="H2">Heading 2 (H2)</option>
+            <option value="H3">Heading 3 (H3)</option>
+            <option value="H4">Heading 4 (H4)</option>
+            <option value="BLOCKQUOTE">Blockquote</option>
+          </select>
+
+          <select
+            aria-label="Font Size"
+            defaultValue=""
+            onChange={(e) => {
+              applyFontSize(e.target.value);
+              e.target.value = "";
+            }}
+            className="text-[11px] font-medium bg-white border border-[#D5DAD5] rounded px-1.5 py-0.5 text-[#1C241E] focus:outline-none focus:ring-1 focus:ring-[#4F6752] cursor-pointer"
+            title="Select text, then choose a font size"
+          >
+            {FONT_SIZE_OPTIONS.map((opt) => (
+              <option key={opt.label} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+
+          <button
+            type="button"
+            title="Serif Font"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => wrapSelectionWithClass("font-serif")}
+            className="px-1.5 py-0.5 text-[11px] font-serif hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors flex items-center gap-0.5"
+          >
+            <Type className="w-3 h-3" />
+            <span>Serif</span>
+          </button>
+          <button
+            type="button"
+            title="Accent Color"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => wrapSelectionWithClass("text-[var(--accent-primary)]")}
+            className="px-1.5 py-0.5 text-[10px] font-semibold hover:bg-[#E2E6E2] rounded text-[#4F6752] transition-colors"
+          >
+            Accent
+          </button>
           <button
             type="button"
             title="Highlight"
-            onClick={() => applyTag("<mark>", "</mark>")}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("hiliteColor", "#FEF3C7")}
             className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
             <Highlighter className="w-3.5 h-3.5" />
@@ -194,36 +391,39 @@ function Field({
 
           <button
             type="button"
-            title="Serif Font"
-            onClick={() => applyTag('<span class="font-serif">', "</span>")}
-            className="px-1.5 py-0.5 text-[11px] font-serif hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors flex items-center gap-0.5"
+            title="Align Left"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("justifyLeft")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
-            <Type className="w-3 h-3" />
-            <span>Serif</span>
+            <AlignLeft className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
-            title="Larger Text"
-            onClick={() => applyTag('<span class="text-lg">', "</span>")}
-            className="px-1.5 py-0.5 text-[10px] font-semibold hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+            title="Align Center"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("justifyCenter")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
-            A+
+            <AlignCenter className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
-            title="Smaller Text"
-            onClick={() => applyTag('<span class="text-sm">', "</span>")}
-            className="px-1.5 py-0.5 text-[10px] font-semibold hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+            title="Align Right"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("justifyRight")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
-            A-
+            <AlignRight className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
-            title="Sage Accent Color"
-            onClick={() => applyTag('<span class="text-[#4F6752]">', "</span>")}
-            className="px-1.5 py-0.5 text-[10px] font-semibold hover:bg-[#E2E6E2] rounded text-[#4F6752] transition-colors"
+            title="Justify"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("justifyFull")}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
-            Sage
+            <AlignJustify className="w-3.5 h-3.5" />
           </button>
 
           <span className="w-px h-4 bg-[#D5DAD5] mx-0.5" />
@@ -231,7 +431,8 @@ function Field({
           <button
             type="button"
             title="Bullet List"
-            onClick={() => applyList(false)}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("insertUnorderedList")}
             className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
             <List className="w-3.5 h-3.5" />
@@ -239,7 +440,8 @@ function Field({
           <button
             type="button"
             title="Numbered List"
-            onClick={() => applyList(true)}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("insertOrderedList")}
             className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
             <ListOrdered className="w-3.5 h-3.5" />
@@ -247,15 +449,26 @@ function Field({
           <button
             type="button"
             title="Subheading"
-            onClick={() => applyTag("<h3>", "</h3>")}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("formatBlock", "H3")}
             className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
             <Heading3 className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
+            title="Normal Paragraph"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("formatBlock", "P")}
+            className="px-1.5 py-0.5 text-[10px] font-semibold hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            P
+          </button>
+          <button
+            type="button"
             title="Blockquote"
-            onClick={() => applyTag("<blockquote>", "</blockquote>")}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => execCmd("formatBlock", "BLOCKQUOTE")}
             className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
             <Quote className="w-3.5 h-3.5" />
@@ -266,6 +479,7 @@ function Field({
           <button
             type="button"
             title="Insert Link"
+            onMouseDown={(e) => e.preventDefault()}
             onClick={addLink}
             className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
@@ -273,29 +487,45 @@ function Field({
           </button>
           <button
             type="button"
-            title="Line Break"
-            onClick={() => applyTag("<br />", "")}
-            className="px-1.5 py-0.5 text-[10px] font-mono hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+            title="Insert Line Break"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={insertLineBreak}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
           >
-            &lt;br&gt;
+            <CornerDownLeft className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            title="Clear Formatting"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={clearFormatting}
+            className="p-1 hover:bg-[#E2E6E2] rounded text-[#1C241E] transition-colors"
+          >
+            <RemoveFormatting className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
 
-      {showPreview ? (
-        <div className="w-full min-h-[78px] border border-[#4F6752]/40 bg-[#FAF9F6] rounded-sm p-3 text-sm text-[#1C241E] leading-relaxed shadow-inner">
-          <p className="text-[10px] uppercase font-bold text-[#6B826E] mb-1 tracking-wider">Live Preview</p>
-          <div className="text-sm font-light leading-relaxed">
-            <FormattedText content={value || "<em>(empty)</em>"} />
-          </div>
-        </div>
+      {isRich && !showHtml ? (
+        <div
+          id={textareaId}
+          ref={editorRef}
+          contentEditable
+          suppressContentEditableWarning
+          onInput={emitChange}
+          onMouseUp={saveSelection}
+          onKeyUp={saveSelection}
+          onBlur={saveSelection}
+          style={{ minHeight: `${Math.max(rows, 2) * 24 + 18}px` }}
+          className={`${cls} rounded-t-none leading-relaxed whitespace-pre-wrap [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_h1]:font-serif [&_h1]:text-3xl [&_h1]:font-medium [&_h2]:font-serif [&_h2]:text-2xl [&_h2]:font-medium [&_h3]:font-serif [&_h3]:text-xl [&_h3]:font-medium [&_h4]:font-serif [&_h4]:text-lg [&_h4]:font-medium [&_blockquote]:border-l-2 [&_blockquote]:border-[#4F6752] [&_blockquote]:pl-3 [&_blockquote]:italic`}
+        />
       ) : multiline ? (
         <textarea
           id={textareaId}
           rows={rows}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`${cls} ${isRich ? "rounded-t-none" : ""}`}
+          className={`${cls} font-mono text-xs`}
         />
       ) : (
         <input
@@ -303,7 +533,7 @@ function Field({
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`${cls} ${isRich ? "rounded-t-none" : ""}`}
+          className={cls}
         />
       )}
       {hint && <p className="text-[11px] text-[#8A9E8C] italic">{hint}</p>}
@@ -435,6 +665,7 @@ type PageId =
   | "faq"
   | "contact"
   | "footer"
+  | "stylesheet"
   | "settings"
   | "seo";
 
@@ -485,6 +716,13 @@ const NAV_ITEMS: {
     label: "Footer",
     sublabel: "Blurb, practice model, disclaimer & copyright",
     icon: PanelBottom,
+    href: "/",
+  },
+  {
+    id: "stylesheet",
+    label: "Stylesheet",
+    sublabel: "Global H1–H4, Paragraph & Custom CSS",
+    icon: Paintbrush,
     href: "/",
   },
   {
@@ -679,41 +917,6 @@ function AboutEditor({
           multiline
           rows={4}
         />
-      </div>
-      <div className="card-panel space-y-5">
-        <SectionDivider label="Education & Credentials" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field
-            label="Doctorate"
-            value={content.degree}
-            onChange={(v) => set("degree", v)}
-          />
-          <Field
-            label="University"
-            value={content.university}
-            onChange={(v) => set("university", v)}
-          />
-          <Field
-            label="Internship"
-            value={content.internship}
-            onChange={(v) => set("internship", v)}
-          />
-          <Field
-            label="Bachelor's"
-            value={content.bachelors}
-            onChange={(v) => set("bachelors", v)}
-          />
-          <Field
-            label="Licensure"
-            value={content.licensure}
-            onChange={(v) => set("licensure", v)}
-          />
-          <Field
-            label="Years Licensed"
-            value={content.yearsLicensed}
-            onChange={(v) => set("yearsLicensed", v)}
-          />
-        </div>
       </div>
     </div>
   );
@@ -1013,18 +1216,11 @@ function ContactEditor({
       </div>
       <div className="card-panel space-y-5">
         <SectionDivider label="Practice Details Sidebar (Right Column)" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field
-            label="Psychologist"
-            value={content.doctorTitle}
-            onChange={(v) => set("doctorTitle", v)}
-          />
-          <Field
-            label="Credentials"
-            value={content.credentials}
-            onChange={(v) => set("credentials", v)}
-          />
-        </div>
+        <Field
+          label="Psychologist"
+          value={content.doctorTitle}
+          onChange={(v) => set("doctorTitle", v)}
+        />
         <Field
           label="Practice Model"
           value={content.contactPracticeModel}
@@ -1174,6 +1370,183 @@ function FooterEditor({
           value={content.footerCopyright}
           onChange={(v) => set("footerCopyright", v)}
           hint="Leave blank to use the automatic copyright line with current year, practice name, and doctor title."
+        />
+      </div>
+    </div>
+  );
+}
+
+function StylesheetEditor({
+  content,
+  set,
+}: {
+  content: EditableContent;
+  set: (k: keyof EditableContent, v: unknown) => void;
+}) {
+  const styles: SiteStyles = {
+    ...DEFAULT_SITE_STYLES,
+    ...(content.siteStyles || {}),
+  };
+
+  const updateTag = (
+    tag: "h1" | "h2" | "h3" | "h4" | "p",
+    field: keyof ElementStyleConfig,
+    val: string
+  ) => {
+    set("siteStyles", {
+      ...styles,
+      [tag]: {
+        ...styles[tag],
+        [field]: val,
+      },
+    });
+  };
+
+  const TAGS: {
+    key: "h1" | "h2" | "h3" | "h4" | "p";
+    label: string;
+    sample: string;
+    isHeading: boolean;
+  }[] = [
+    { key: "h1", label: "Heading 1 (H1) — Main Page Titles", sample: "Space to understand. Room for change.", isHeading: true },
+    { key: "h2", label: "Heading 2 (H2) — Section Headings", sample: "Core Areas & Clinical Approach", isHeading: true },
+    { key: "h3", label: "Heading 3 (H3) — Subheadings", sample: "Identity & Life Transitions", isHeading: true },
+    { key: "h4", label: "Heading 4 (H4) — Small Headings", sample: "Important Practice Details", isHeading: true },
+    { key: "p", label: "Paragraph (P) — Body Copy", sample: "Life can bring moments that challenge how we understand ourselves and the lives we have built.", isHeading: false },
+  ];
+
+  const SIZES = ["0.875rem", "0.95rem", "1rem", "1.1rem", "1.25rem", "1.35rem", "1.5rem", "1.75rem", "2rem", "2.25rem", "2.5rem", "2.75rem", "3rem", "3.5rem"];
+  const WEIGHTS = [
+    { label: "Light (300)", value: "300" },
+    { label: "Regular (400)", value: "400" },
+    { label: "Medium (500)", value: "500" },
+    { label: "Semibold (600)", value: "600" },
+    { label: "Bold (700)", value: "700" },
+  ];
+  const LINE_HEIGHTS = ["1.15", "1.2", "1.25", "1.35", "1.4", "1.5", "1.6", "1.75", "1.9"];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-start justify-between gap-4">
+        <PageHeader
+          title="Global Stylesheet"
+          description="Control H1, H2, H3, H4, Paragraph, and custom CSS across the entire website."
+          href="/"
+        />
+        <button
+          type="button"
+          onClick={() => set("siteStyles", DEFAULT_SITE_STYLES)}
+          className="shrink-0 mt-1 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider border border-[#D5DAD5] bg-white hover:bg-[#F9F8F5] text-[#4A544C] rounded-sm transition-colors"
+        >
+          Reset Defaults
+        </button>
+      </div>
+
+      {TAGS.map(({ key, label, sample, isHeading }) => {
+        const cfg = styles[key];
+        return (
+          <div key={key} className="card-panel space-y-4">
+            <SectionDivider label={label} />
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#4F6752]">
+                  Font Size
+                </label>
+                <select
+                  value={cfg.fontSize}
+                  onChange={(e) => updateTag(key, "fontSize", e.target.value)}
+                  className="w-full border border-[#D5DAD5] rounded-sm px-2.5 py-2 text-xs text-[#1C241E] bg-white"
+                >
+                  {SIZES.map((sz) => (
+                    <option key={sz} value={sz}>
+                      {sz}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#4F6752]">
+                  Font Weight
+                </label>
+                <select
+                  value={cfg.fontWeight}
+                  onChange={(e) => updateTag(key, "fontWeight", e.target.value)}
+                  className="w-full border border-[#D5DAD5] rounded-sm px-2.5 py-2 text-xs text-[#1C241E] bg-white"
+                >
+                  {WEIGHTS.map((w) => (
+                    <option key={w.value} value={w.value}>
+                      {w.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#4F6752]">
+                  Line Height
+                </label>
+                <select
+                  value={cfg.lineHeight}
+                  onChange={(e) => updateTag(key, "lineHeight", e.target.value)}
+                  className="w-full border border-[#D5DAD5] rounded-sm px-2.5 py-2 text-xs text-[#1C241E] bg-white"
+                >
+                  {LINE_HEIGHTS.map((lh) => (
+                    <option key={lh} value={lh}>
+                      {lh}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold uppercase tracking-widest text-[#4F6752]">
+                  Text Color
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={cfg.color}
+                    onChange={(e) => updateTag(key, "color", e.target.value)}
+                    className="w-9 h-8 border border-[#D5DAD5] rounded-sm cursor-pointer bg-white p-0.5"
+                  />
+                  <input
+                    type="text"
+                    value={cfg.color}
+                    onChange={(e) => updateTag(key, "color", e.target.value)}
+                    className="flex-1 min-w-0 border border-[#D5DAD5] rounded-sm px-2 py-1.5 text-xs font-mono text-[#1C241E] bg-white"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="p-4 bg-[#F9F8F5] border border-[#E2E6E2] rounded-sm">
+              <span className="block text-[9px] uppercase tracking-widest text-[#8A7F6E] font-bold mb-1.5">
+                Live Preview
+              </span>
+              <div
+                style={{
+                  fontSize: cfg.fontSize,
+                  lineHeight: cfg.lineHeight,
+                  fontWeight: cfg.fontWeight,
+                  color: cfg.color,
+                  fontFamily: isHeading ? "var(--font-serif)" : "var(--font-sans)",
+                }}
+              >
+                {sample}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
+      <div className="card-panel space-y-3">
+        <SectionDivider label="Custom Global CSS (Advanced)" />
+        <p className="text-xs text-[#6B826E]">
+          Optional raw CSS rules applied across the entire public website.
+        </p>
+        <textarea
+          rows={6}
+          value={styles.customCss || ""}
+          onChange={(e) => set("siteStyles", { ...styles, customCss: e.target.value })}
+          placeholder="/* e.g. .site-root main h1 { letter-spacing: -0.02em; } */"
+          className="w-full border border-[#D5DAD5] rounded-sm px-3 py-2.5 text-xs font-mono text-[#1C241E] focus:outline-none focus:ring-2 focus:ring-[#4F6752] bg-white"
         />
       </div>
     </div>
@@ -1735,6 +2108,7 @@ function Editor({ onLogout }: { onLogout: () => void }) {
             {activePage === "faq" && <FAQEditor content={content} set={set} />}
             {activePage === "contact" && <ContactEditor content={content} set={set} />}
             {activePage === "footer" && <FooterEditor content={content} set={set} />}
+            {activePage === "stylesheet" && <StylesheetEditor content={content} set={set} />}
             {activePage === "settings" && <SettingsEditor content={content} set={set} />}
             {activePage === "seo" && <SEOEditor content={content} set={set} />}
           </div>

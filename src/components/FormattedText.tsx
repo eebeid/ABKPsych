@@ -15,20 +15,31 @@ interface FormattedTextProps {
   as?: React.ElementType;
 }
 
-// Matches tags we allow: <b>, <strong>, <i>, <em>, <u>, <s>, <strike>, <mark>, <br>, <p>, <a>, <ul>, <ol>, <li>, <h3>, <h4>, <blockquote>, <span>
+// Matches tags we allow: <b>, <strong>, <i>, <em>, <u>, <s>, <strike>, <mark>, <br>, <p>, <div>, <a>, <ul>, <ol>, <li>, <h1>-<h4>, <blockquote>, <span>
 const HTML_TAG_REGEX =
-  /<\/?(b|strong|i|em|u|s|strike|mark|br|p|a|ul|ol|li|h3|h4|blockquote|span)(\s+[^>]*)?>/gi;
+  /<\/?(b|strong|i|em|u|s|strike|mark|br|p|div|a|ul|ol|li|h1|h2|h3|h4|blockquote|span)(\s+[^>]*)?>/gi;
 
 const ALLOWED_SPAN_CLASSES = new Set([
   "font-serif",
-  "text-lg",
-  "text-sm",
   "text-xs",
+  "text-sm",
+  "text-base",
+  "text-lg",
+  "text-xl",
+  "text-2xl",
+  "text-[#4F6752]",
   "text-[var(--accent-primary)]",
   "text-[#1C241E]",
   "uppercase",
   "tracking-wider",
 ]);
+
+function extractSafeTextAlign(rawAttrs: string): string {
+  const styleMatch = /style=(["'])(.*?)\1/i.exec(rawAttrs);
+  if (!styleMatch) return "";
+  const alignMatch = /text-align\s*:\s*(left|center|right|justify)/i.exec(styleMatch[2]);
+  return alignMatch ? ` style="text-align: ${alignMatch[1].toLowerCase()};"` : "";
+}
 
 function sanitizeSafeHtml(html: string): string {
   // Only permit safe tags and attributes
@@ -48,10 +59,13 @@ function sanitizeSafeHtml(html: string): string {
       "mark",
       "br",
       "p",
+      "div",
       "a",
       "ul",
       "ol",
       "li",
+      "h1",
+      "h2",
       "h3",
       "h4",
       "blockquote",
@@ -87,16 +101,16 @@ function sanitizeSafeHtml(html: string): string {
       return `<ol class="list-decimal pl-5 my-2 space-y-1 text-left">`;
     }
 
-    if (cleanTag === "h3") {
-      return `<h3 class="font-serif text-xl font-medium text-[#1C241E] mt-3 mb-1">`;
-    }
-
-    if (cleanTag === "h4") {
-      return `<h4 class="font-serif text-lg font-medium text-[#1C241E] mt-2 mb-1">`;
+    if (cleanTag === "h1" || cleanTag === "h2" || cleanTag === "h3" || cleanTag === "h4") {
+      return `<${cleanTag} class="font-serif mt-3 mb-1"${extractSafeTextAlign(rawAttrs)}>`;
     }
 
     if (cleanTag === "blockquote") {
       return `<blockquote class="border-l-2 border-[var(--accent-primary)] pl-4 italic my-2 text-[#4A544C]">`;
+    }
+
+    if (cleanTag === "p" || cleanTag === "div") {
+      return `<${cleanTag}${extractSafeTextAlign(rawAttrs)}>`;
     }
 
     if (cleanTag === "span") {
